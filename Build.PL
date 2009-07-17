@@ -7,6 +7,9 @@ my $builder = Module::Build->new(
     license             => 'perl',
     dist_author         => 'Yuki Kimoto <kimoto.yuki@gmail.com>',
     dist_version_from   => 'lib/Validator/Custom/HTMLForm.pm',
+    no_index => { 
+        package   => 'Validator::Custom::HTMLForm::Constraints',
+    },
     build_requires => {
         'Test::More' => 0,
     },

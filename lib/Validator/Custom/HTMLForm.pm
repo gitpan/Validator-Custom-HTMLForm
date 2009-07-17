@@ -1,7 +1,7 @@
 package Validator::Custom::HTMLForm;
 use base 'Validator::Custom';
 
-our $VERSION = '0.0101';
+our $VERSION = '0.0102';
 
 use warnings;
 use strict;
@@ -360,7 +360,7 @@ Validator::Custom::HTMLForm - HTML Form validator based on Validator::Custom
 
 =head1 VERSION
 
-Version 0.0101
+Version 0.0102
 
 =cut
 
@@ -368,36 +368,418 @@ Version 0.0101
 
     use Validator::Custom::HTMLForm;
     
+    # Data
     my $data = {
-        key1  => ' 123 ',
-        key2  => "  \n a \r\n b\nc  \t",
-        key3  => '  abc  ',
-        key4  => '  def  '
-    };
+        name => 'ABCD',
+        age =>  29,
 
-    my $validators = [
-      key1 => [
-          ['TRIM']           # ' 123 ' -> '123'
-      ],
-      key2  => [
-          ['TRIM_COLLAPSE']  # "  \n a \r\n b\nc  \t" -> 'a b c'
-      ],
-      key3      => [
-          ['TRIM_LEAD']      # '  abc  ' -> 'abc   '
-      ],
-      key4     => [
-          ['TRIM_TRAIL']     # '  def  ' -> '   def'
-      ]
-    ];
+        mail1  => 'name@gmail.com',
+        mail2  => 'name@gmail.com',
+
+        year   => 2005,
+        month  =>   11,
+        day    =>   27,
+    }
     
-    my $vc_trim = Validator::Custom::Trim->new;
-    my $results = $vc_trim->validate($data, $validators)->results;
+    # Validators
+    my $validators = [
+        name => [
+            'NOT_BLANK',
+            'ASCII',
+            {LENGTH => [1, 30]}
+        ],
+        age => [
+            'NOT_BLANK',
+            'INT'
+        ],
+        
+        mail1  => [
+            'TRIM',
+            'NOT_BLANK',
+            'EMAIL_LOOSE'
+        ],
+        mail2  => [
+            'NOT_BLANK',
+            'EMAIL_LOOSE'
+        ],
+        
+        [qw/mail1 mail2/] => [
+            'DUPLICATION'
+        ],
+        
+        { date  => ['year',  'month', 'day'] } => [
+            'DATE'
+        ]
+    ]
+    
+    # Create validator object
+    my $vc = Validator::Custom::HTMLForm->new;
+    
+    # Validate
+    $vc->validate($data, $validators);
+    
+    # Get invalid key
+    my @invalid_keys = $vc->invalid_keys;
+    
+    # Get converted result
+    my $results = $vc->results;
+    
+    # Validators and error message
+    my $validators = [
+        name => [
+            ['NOT_BLANK',         'name must be exist'],
+            ['ASCII',             'name must be acsii']
+            [{LENGTH => [1, 30]}, 'name must be length 1 to 30']
+        ],
+        age => [
+            ['NOT_BLANK',         'age must be exist'],
+            ['INT',               'age must be integer value']
+        ],
+    ]
+    
+    # Get error message on one linear
+    my @errors = Validator::Custom::HTMLForm->new->validate($data,$validator)->errors;
 
 =head1 DESCRIPTION
 
 This module usage is same as L<Validator::Custom>.
 
 See L<Validator::Custom> document.
+
+=head1 VALIDATION COMMANDS
+
+=over 4
+
+=item SP
+
+check if the data containe space.
+
+=item NOT_BLANK
+
+check if the data is not blank.
+
+=item INT
+
+check if the data is integer.
+    
+    # valid data
+    123
+    -134
+
+=item UINT
+
+check if the data is unsigned integer.
+
+    # valid data
+    123
+    
+=item DECIMAL
+    
+    my $data = { num => '123.45678' };
+    my $validators => [
+        num => [
+            {'DECIMAL' => [3, 5]}
+        ]
+    ];
+
+    Validator::Custom::HTMLForm->new->validate($data,$validators);
+
+each numbers (3,5) mean maximum digits before/after '.'
+
+=item ASCII
+
+check is the data consists of only ascii code.
+
+=item LENGTH
+
+check the length of the data.
+
+The following sample check if the length of the data is 4 or not.
+
+    my $data = { str => 'aaaa' };
+    my $validators => [
+        num => [
+            {'LENGTH' => 4}
+        ]
+    ];
+
+when you set two arguments, it checks if the length of data is in
+the range between 4 and 10.
+    
+    my $data = { str => 'aaaa' };
+    my $validators => [
+        num => [
+            {'LENGTH' => [4, 10]}
+        ]
+    ];
+
+=item HTTP_URL
+
+verify it is a http(s)-url
+
+    my $data = { url => 'http://somehost.com' };
+    my $validators => [
+        url => [
+            'HTTP_URL'
+        ]
+    ];
+
+=item SELECTED_AT_LEAST
+
+verify the quantity of selected parameters is counted over allowed minimum.
+
+    <input type="checkbox" name="hobby" value="music" /> Music
+    <input type="checkbox" name="hobby" value="movie" /> Movie
+    <input type="checkbox" name="hobby" value="game"  /> Game
+    
+    
+    my $data = {hobby => ['music', 'movie' ]};
+    my $validators => [
+        hobby => [
+            {SELECTED_AT_LEAST => 1}
+        ]
+    ];
+
+=item REGEX
+
+check with regular expression.
+    
+    my $data = {str => 'aaa'};
+    my $validators => [
+        str => [
+            {REGEX => qr/a{3}/}
+        ]
+    ];
+
+=item DUPLICATION
+
+check if the two data are same or not.
+
+    my $data = {mail1 => 'a@somehost.com', mail2 => 'a@somehost.com'};
+    my $validators => [
+        [qw/mail1 mail2/] => [
+            'DUPLICATION'
+        ]
+    ];
+
+=item EMAIL
+
+check with L<Email::Valid>.
+
+    my $data = {mail => 'a@somehost.com'};
+    my $validators => [
+        mail => [
+            'EMAIL'
+        ]
+    ];
+
+=item EMAIL_MX
+
+check with L<Email::Valid>, including  mx check.
+
+    my $data = {mail => 'a@somehost.com'};
+    my $validators => [
+        mail => [
+            'EMAIL_MX'
+        ]
+    ];
+
+=item EMAIL_LOOSE
+
+check with L<Email::Valid::Loose>.
+
+    my $data = {mail => 'a.@somehost.com'};
+    my $validators => [
+        mail => [
+            'EMAIL_LOOSE'
+        ]
+    ];
+
+=item EMAIL_LOOSE_MX
+
+    my $data = {mail => 'a.@somehost.com'};
+    my $validators => [
+        mail => [
+            'EMAIL_LOOSE'
+        ]
+    ];
+
+=item DATE
+
+check with L<Date::Calc>
+
+    my $data = {year => '2009', month => '12', day => '13'};
+    my $validators => [
+        {date => [qw/year month day/]} => [
+            'DATE'
+        ]
+    ];
+    
+    $vc->results->{date}; # 2009-12-13 00:00:00
+
+You can specify options
+
+    # Convert DateTime object
+    my $validators => [
+        {date => [qw/year month day/]} => [
+            ['DATE', {'datetime_class' => 'DateTime', time_zone => 'Asia/Tokyo'}]
+        ]
+    ];
+    
+    $vc->results->{date}; # DateTime object
+
+
+    # Convert Time::Piece object
+    my $validators => [
+        {date => [qw/year month day/]} => [
+            ['DATE', {'datetime_class' => 'Time::Piece'}]
+        ]
+    ];
+    
+    $vc->results->{date}; # Time::Piece object
+
+=item TIME
+
+check with L<Date::Calc>
+
+    my $data = {hour => '12', minute => '40', second => '13'};
+    my $validators => [
+        [qw/hour minute second/] => [
+            'TIME'
+        ]
+    ];
+
+=item DATETIME
+
+check with L<Date::Calc>
+
+    my $data = {
+        year => '2009', month => '12',  day => '13'
+        hour => '12',   minute => '40', second => '13'
+    };
+    my $validators => [
+        {datetime => [qw/year month day hour minute second/]} => [
+            'DATETIME'
+        ]
+    ];
+    
+    $vc->results->{datetime}; # 2009-12-13 12:40:13
+
+You can specify options
+
+    # Convert DateTime object
+    my $validators => [
+        {datetime => [qw/year month day hour minute second/]} => [
+            ['DATETIME', {'datetime_class' => 'DateTime', time_zone => 'Asia/Tokyo'}]
+        ]
+    ];
+    
+    $vc->results->{date}; # DateTime object
+
+
+    # Convert Time::Piece object
+    my $validators => [
+        {datetime => [qw/year month day hour minute second/]} => [
+            ['DATETIME', {'datetime_class' => 'Time::Piece'}]
+        ]
+    ];
+    
+    $vc->results->{date}; # Time::Piece object
+
+=item DATETIME_STRPTIME
+
+check with L<DateTime::Format::Strptime>.
+
+    my $data = {datetime => '2006-04-26T19:09:21+0900'};
+
+    my $validators => [
+        datetime => [
+            {'DATETIME' => '%Y-%m-%dT%T%z'}
+        ]
+    ];
+    
+    $vc->results->{datetime}; # DateTime object
+
+=item DATETIME_FORMAT
+
+check with DateTime::Format::***. for example, L<DateTime::Format::HTTP>,
+L<DateTime::Format::Mail>, L<DateTime::Format::MySQL> and etc.
+
+    my $data = {datetime => '2004-04-26 19:09:21'};
+
+    my $validators = [
+        datetime => [
+            {DATETIME_FORMAT => 'MySQL'}
+        ]
+    ];
+
+=item GREATER_THAN
+
+numeric comparison
+
+    my $validators = [
+        age => [
+            {GREATER_THAN => 25}
+        ]
+    ];
+
+=item LESS_THAN
+
+numeric comparison
+
+    my $validators = [
+        age => [
+            {LESS_THAN => 25}
+        ]
+    ];
+
+=item EQUAL_TO
+
+numeric comparison
+
+    my $validators = [
+        age => [
+            {EQUAL_TO => 25}
+        ]
+    ];
+    
+=item BETWEEN
+
+numeric comparison
+
+    my $validators = [
+        age => [
+            {BETWEEN => [1, 20]}
+        ]
+    ];
+
+=item IN_ARRAY
+
+check if the food ordered is in menu
+
+    my $validators = [
+        food => [
+            {IN_ARRAY => [qw/sushi bread apple/]}
+        ]
+    ];
+
+=item TRIM
+
+Trim leading and trailing white space
+
+=item TRIM_LEAD
+
+Trim leading white space
+
+=item TRIM_TRAIL
+
+Trim trailing white space
+
+=item TRIM_COLLAPSE
+
+Trim leading and trailing white space, and collapse all whitespace characters into a single space.
+
+=back
 
 =head1 AUTHOR
 
@@ -408,9 +790,6 @@ Yuki Kimoto, C<< <kimoto.yuki at gmail.com> >>
 Please report any bugs or feature requests to C<bug-validator-custom-htmlform at rt.cpan.org>, or through
 the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Validator-Custom-HTMLForm>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
-
-
-
 
 =head1 SUPPORT
 
@@ -442,8 +821,11 @@ L<http://search.cpan.org/dist/Validator-Custom-HTMLForm/>
 =back
 
 
-=head1 ACKNOWLEDGEMENTS
+=head1 SEE ALSO
 
+L<Validator::Custom>, L<Validator::Custom::Trim>
+
+L<FormValidator::Custom>, L<Data::FormValidator>
 
 =head1 COPYRIGHT & LICENSE
 
