@@ -1,7 +1,7 @@
 package Validator::Custom::HTMLForm;
 use base 'Validator::Custom';
 
-our $VERSION = '0.0201';
+our $VERSION = '0.0301';
 
 use warnings;
 use strict;
@@ -11,44 +11,73 @@ use Validator::Custom::Trim;
 
 __PACKAGE__->add_constraint(
     Validator::Custom::Trim->constraints,
-    NOT_BLANK         => \&Validator::Custom::HTMLForm::Constraints::NOT_BLANK,
-    SP                => \&Validator::Custom::HTMLForm::Constraints::SP,
-    SPACE             => \&Validator::Custom::HTMLForm::Constraints::SPACE,
-    INT               => \&Validator::Custom::HTMLForm::Constraints::INT,
-    UINT              => \&Validator::Custom::HTMLForm::Constraints::UINT,
-    ASCII             => \&Validator::Custom::HTMLForm::Constraints::ASCII,
-    DUPLICATION       => \&Validator::Custom::HTMLForm::Constraints::DUPLICATION,
-    LENGTH            => \&Validator::Custom::HTMLForm::Constraints::LENGTH,
-    REGEX             => \&Validator::Custom::HTMLForm::Constraints::REGEX,
-    EMAIL             => \&Validator::Custom::HTMLForm::Constraints::EMAIL,
-    EMAIL_MX          => \&Validator::Custom::HTMLForm::Constraints::EMAIL_MX,
-    EMAIL_LOOSE       => \&Validator::Custom::HTMLForm::Constraints::EMAIL_LOOSE,
-    EMAIL_LOOSE_MX    => \&Validator::Custom::HTMLForm::Constraints::EMAIL_LOOSE_MX,
-    DATE              => \&Validator::Custom::HTMLForm::Constraints::DATE,
-    TIME              => \&Validator::Custom::HTMLForm::Constraints::TIME,
-    DATETIME          => \&Validator::Custom::HTMLForm::Constraints::DATETIME,
-    HTTP_URL          => \&Validator::Custom::HTMLForm::Constraints::HTTP_URL,
-    SELECTED_AT_LEAST => \&Validator::Custom::HTMLForm::Constraints::SELECTED_AT_LEAST,
-    GREATER_THAN      => \&Validator::Custom::HTMLForm::Constraints::GREATER_THAN,
-    LESS_THAN         => \&Validator::Custom::HTMLForm::Constraints::LESS_THAN,
-    EQUAL_TO          => \&Validator::Custom::HTMLForm::Constraints::EQUAL_TO,
-    BETWEEN           => \&Validator::Custom::HTMLForm::Constraints::BETWEEN,
-    DECIMAL           => \&Validator::Custom::HTMLForm::Constraints::DECIMAL,
-    IN_ARRAY          => \&Validator::Custom::HTMLForm::Constraints::IN_ARRAY,
-    DATETIME_FORMAT   => \&Validator::Custom::HTMLForm::Constraints::DATETIME_FORMAT,
-    DATETIME_STRPTIME => \&Validator::Custom::HTMLForm::Constraints::DATETIME_STRPTIME,
+    
+    not_blank         => \&Validator::Custom::HTMLForm::Constraints::not_blank,
+    sp                => \&Validator::Custom::HTMLForm::Constraints::sp,
+    space             => \&Validator::Custom::HTMLForm::Constraints::space,
+    int               => \&Validator::Custom::HTMLForm::Constraints::int,
+    uint              => \&Validator::Custom::HTMLForm::Constraints::uint,
+    ascii             => \&Validator::Custom::HTMLForm::Constraints::ascii,
+    duplication       => \&Validator::Custom::HTMLForm::Constraints::duplication,
+    length            => \&Validator::Custom::HTMLForm::Constraints::length,
+    regex             => \&Validator::Custom::HTMLForm::Constraints::regex,
+    email             => \&Validator::Custom::HTMLForm::Constraints::email,
+    email_mx          => \&Validator::Custom::HTMLForm::Constraints::email_mx,
+    email_loose       => \&Validator::Custom::HTMLForm::Constraints::email_loose,
+    email_loose_mx    => \&Validator::Custom::HTMLForm::Constraints::email_loose_mx,
+    date              => \&Validator::Custom::HTMLForm::Constraints::date,
+    time              => \&Validator::Custom::HTMLForm::Constraints::time,
+    datetime          => \&Validator::Custom::HTMLForm::Constraints::datetime,
+    http_url          => \&Validator::Custom::HTMLForm::Constraints::http_url,
+    selected_at_least => \&Validator::Custom::HTMLForm::Constraints::selected_at_least,
+    greater_than      => \&Validator::Custom::HTMLForm::Constraints::greater_than,
+    less_than         => \&Validator::Custom::HTMLForm::Constraints::less_than,
+    equal_to          => \&Validator::Custom::HTMLForm::Constraints::equal_to,
+    between           => \&Validator::Custom::HTMLForm::Constraints::between,
+    decimal           => \&Validator::Custom::HTMLForm::Constraints::decimal,
+    in_array          => \&Validator::Custom::HTMLForm::Constraints::in_array,
+    datetime_format   => \&Validator::Custom::HTMLForm::Constraints::datetime_format,
+    datetime_strptime => \&Validator::Custom::HTMLForm::Constraints::datetime_strptime,
+    
+    # Provide FormValidator::Simple Compatibility
+    NOT_BLANK         => \&Validator::Custom::HTMLForm::Constraints::not_blank,
+    SP                => \&Validator::Custom::HTMLForm::Constraints::sp,
+    SPACE             => \&Validator::Custom::HTMLForm::Constraints::space,
+    INT               => \&Validator::Custom::HTMLForm::Constraints::int,
+    UINT              => \&Validator::Custom::HTMLForm::Constraints::uint,
+    ASCII             => \&Validator::Custom::HTMLForm::Constraints::ascii,
+    DUPLICATION       => \&Validator::Custom::HTMLForm::Constraints::duplication,
+    LENGTH            => \&Validator::Custom::HTMLForm::Constraints::length,
+    REGEX             => \&Validator::Custom::HTMLForm::Constraints::regex,
+    EMAIL             => \&Validator::Custom::HTMLForm::Constraints::email,
+    EMAIL_MX          => \&Validator::Custom::HTMLForm::Constraints::email_mx,
+    EMAIL_LOOSE       => \&Validator::Custom::HTMLForm::Constraints::email_loose,
+    EMAIL_LOOSE_MX    => \&Validator::Custom::HTMLForm::Constraints::email_loose_mx,
+    DATE              => \&Validator::Custom::HTMLForm::Constraints::date,
+    TIME              => \&Validator::Custom::HTMLForm::Constraints::time,
+    DATETIME          => \&Validator::Custom::HTMLForm::Constraints::datetime,
+    HTTP_URL          => \&Validator::Custom::HTMLForm::Constraints::http_url,
+    SELECTED_AT_LEAST => \&Validator::Custom::HTMLForm::Constraints::selected_at_least,
+    GREATER_THAN      => \&Validator::Custom::HTMLForm::Constraints::greater_than,
+    LESS_THAN         => \&Validator::Custom::HTMLForm::Constraints::less_than,
+    EQUAL_TO          => \&Validator::Custom::HTMLForm::Constraints::equal_to,
+    BETWEEN           => \&Validator::Custom::HTMLForm::Constraints::between,
+    DECIMAL           => \&Validator::Custom::HTMLForm::Constraints::decimal,
+    IN_ARRAY          => \&Validator::Custom::HTMLForm::Constraints::in_array,
+    DATETIME_FORMAT   => \&Validator::Custom::HTMLForm::Constraints::datetime_format,
+    DATETIME_STRPTIME => \&Validator::Custom::HTMLForm::Constraints::datetime_strptime,
 );
 
 package Validator::Custom::HTMLForm::Constraints;
 
-sub NOT_BLANK {defined $_[0] && $_[0] ne '' ? 1 : 0}
-sub SP    {$_[0] =~ /\s/                ? 1 : 0}
-sub SPACE {$_[0] =~ /\s/                ? 1 : 0}
-sub INT   {$_[0] =~ /^\-?[\d]+$/        ? 1 : 0}
-sub UINT  {$_[0] =~ /^\d+$/             ? 1 : 0}
-sub ASCII {$_[0] =~ /^[\x21-\x7E]+$/    ? 1 : 0}
+sub not_blank {defined $_[0] && $_[0] ne '' ? 1 : 0}
+sub sp    {$_[0] =~ /\s/                ? 1 : 0}
+sub space {$_[0] =~ /\s/                ? 1 : 0}
+sub int   {$_[0] =~ /^\-?[\d]+$/        ? 1 : 0}
+sub uint  {$_[0] =~ /^\d+$/             ? 1 : 0}
+sub ascii {$_[0] =~ /^[\x21-\x7E]+$/    ? 1 : 0}
 
-sub DUPLICATION {
+sub duplication {
     my $values = shift;
     
     Carp::croak(qq/validation "DUPLICATION" needs two keys of data./)
@@ -57,7 +86,7 @@ sub DUPLICATION {
     return $values->[0] eq $values->[1] ? 1 : 0;
 }
 
-sub LENGTH {
+sub length {
     my ($value, $args) = @_;
     
     my $min;
@@ -80,36 +109,36 @@ sub LENGTH {
     return $min <= $length && $length <= $max ? 1 : 0;
 }
 
-sub REGEX {
+sub regex {
     my ($value, $regex) = @_;
     $value =~ /$regex/ ? 1 : 0;
 }
 
-sub EMAIL {
+sub email {
     require Email::Valid;
     return 0 unless $_[0];
     return Email::Valid->address(-address => $_[0]) ? 1 : 0;
 }
 
-sub EMAIL_MX {
+sub email_mx {
     require Email::Valid;
     return 0 unless $_[0];
     return Email::Valid->address(-address => $_[0], -mxcheck => 1) ? 1 : 0;
 }
 
-sub EMAIL_LOOSE {
+sub email_loose {
     require Email::Valid::Loose;
     return 0 unless $_[0];
     return Email::Valid::Loose->address($_[0]) ? 1 : 0;
 }
 
-sub EMAIL_LOOSE_MX {
+sub email_loose_mx {
     require Email::Valid::Loose;
     return 0 unless $_[0];
     return Email::Valid::Loose->address(-address => $_[0], -mxcheck => 1) ? 1 : 0;
 }
 
-sub DATE {
+sub date {
     my ($values, $options) = @_;
     
     my ($year, $month, $day) = @$values;
@@ -145,7 +174,7 @@ sub DATE {
     return ($is_valid, $result);
 }
 
-sub TIME {
+sub time {
     my ($hour, $min, $sec) = @{$_[0]};
     $hour ||= 0;
     $min  ||= 0;
@@ -157,7 +186,7 @@ sub TIME {
     return ($result, $time);
 }
 
-sub DATETIME {
+sub datetime {
     my ($values, $options) = @_;
     my ($year, $month, $day, $hour, $min, $sec) = @$values;
     $options ||= {};
@@ -201,11 +230,11 @@ sub DATETIME {
     return ($is_valid, $data);
 }
 
-sub HTTP_URL {
+sub http_url {
     return $_[0] =~ /^s?https?:\/\/[-_.!~*'()a-zA-Z0-9;\/?:\@&=+\$,%#]+$/ ? 1 : 0;
 }
 
-sub SELECTED_AT_LEAST {
+sub selected_at_least {
     my ($values, $num) = @_;
     
     my $selected = ref $values ? $values : [$values];
@@ -213,7 +242,7 @@ sub SELECTED_AT_LEAST {
     return scalar(@$selected) >= $num ? 1 : 0;
 }
 
-sub GREATER_THAN {
+sub greater_than {
     my ($value, $target) = @_;
     
     Carp::croak(qq/Validation GREATER_THAN needs a numeric argument./)
@@ -223,7 +252,7 @@ sub GREATER_THAN {
     return ( $value > $target ) ? 1 : 0;
 }
 
-sub LESS_THAN {
+sub less_than {
     my ($value, $target) = @_;
     
     Carp::croak(qq/Validation LESS_THAN needs a numeric argument./)
@@ -233,7 +262,7 @@ sub LESS_THAN {
     return ( $value < $target ) ? 1 : 0;
 }
 
-sub EQUAL_TO {
+sub equal_to {
     my ($value, $target) = @_;
     
     Carp::croak(qq/Validation EQUAL_TO needs a numeric argument./)
@@ -243,7 +272,7 @@ sub EQUAL_TO {
     return ( $value == $target ) ? 1 : 0;
 }
 
-sub BETWEEN {
+sub between {
     my ($value, $args) = @_;
     my ($start, $end) = @$args;
     
@@ -254,7 +283,7 @@ sub BETWEEN {
     return ( $value >= $start && $value <= $end ) ? 1 : 0;
 }
 
-sub DECIMAL {
+sub decimal {
     my ($value, $digits) = @_;
     
     Carp::croak(qq/Validation DECIMAL needs one or two numeric arguments./)
@@ -272,14 +301,14 @@ sub DECIMAL {
     return $value =~ /$reg/ ? 1 : 0;
 }
 
-sub IN_ARRAY {
+sub in_array {
     my ($value, $args) = @_;
     $value = '' unless defined $value;
     my $match = grep { $_ eq $value } @$args;
     return $match > 0 ? 1 : 0;
 }
 
-sub DATETIME_FORMAT {
+sub datetime_format {
     my ($date, $arg) = @_;
     
     my $format;
@@ -318,7 +347,7 @@ sub DATETIME_FORMAT {
     return ($is_valid, $dt);
 }
 
-sub DATETIME_STRPTIME {
+sub datetime_strptime {
     my ($date, $arg) = @_;
     
     my $format;
@@ -352,6 +381,9 @@ sub DATETIME_STRPTIME {
     }
     return ($is_valid, $dt);
 }
+
+package Validator::Custom::HTMLForm;
+
 1;
 
 =head1 NAME
@@ -360,7 +392,7 @@ Validator::Custom::HTMLForm - HTML Form validator based on Validator::Custom
 
 =head1 VERSION
 
-Version 0.0102
+Version 0.0301
 
 =cut
 
@@ -381,34 +413,34 @@ Version 0.0102
         day    =>   27,
     }
     
-    # Validators
+    # Validation rule
     my $validation_rule = [
         name => [
-            'NOT_BLANK',
-            'ASCII',
-            {LENGTH => [1, 30]}
+            'not_blank',
+            'ascii',
+            {length => [1, 30]}
         ],
         age => [
-            'NOT_BLANK',
-            'INT'
+            'not_blank',
+            'int'
         ],
         
         mail1  => [
-            'TRIM',
-            'NOT_BLANK',
-            'EMAIL_LOOSE'
+            'trim',
+            'not_blank',
+            'email_loose'
         ],
         mail2  => [
-            'NOT_BLANK',
-            'EMAIL_LOOSE'
+            'not_blank',
+            'email_loose'
         ],
         
         [qw/mail1 mail2/] => [
-            'DUPLICATION'
+            'duplication'
         ],
         
         { date  => ['year',  'month', 'day'] } => [
-            'DATE'
+            'date'
         ]
     ]
     
@@ -424,16 +456,16 @@ Version 0.0102
     # Get converted result
     my $results = $vc->results;
     
-    # Validators and error message
+    # Validation rule and error messages
     my $validation_rule = [
         name => [
-            ['NOT_BLANK',         'name must be exist'],
-            ['ASCII',             'name must be acsii']
-            [{LENGTH => [1, 30]}, 'name must be length 1 to 30']
+            ['not_blank',         'name must be exist'],
+            ['ascii',             'name must be acsii']
+            [{length => [1, 30]}, 'name must be length 1 to 30']
         ],
         age => [
-            ['NOT_BLANK',         'age must be exist'],
-            ['INT',               'age must be integer value']
+            ['not_blank',         'age must be exist'],
+            ['int',               'age must be integer value']
         ],
     ]
     
@@ -448,7 +480,11 @@ This module usage is same as L<Validator::Custom>.
 
 See L<Validator::Custom> document.
 
-=head1 VALIDATION COMMANDS
+=head1 Constraints
+
+The following constraints is available
+
+Upper case is also availabule, like NOT_BLANK
 
 =over 4
 
@@ -456,11 +492,11 @@ See L<Validator::Custom> document.
 
 check if the data containe space.
 
-=item NOT_BLANK
+=item not_blank
 
 check if the data is not blank.
 
-=item INT
+=item int
 
 check if the data is integer.
     
@@ -468,19 +504,19 @@ check if the data is integer.
     123
     -134
 
-=item UINT
+=item uint
 
 check if the data is unsigned integer.
 
     # valid data
     123
     
-=item DECIMAL
+=item decimal
     
     my $data = { num => '123.45678' };
     my $validation_rule => [
         num => [
-            {'DECIMAL' => [3, 5]}
+            {'decimal' => [3, 5]}
         ]
     ];
 
@@ -488,11 +524,11 @@ check if the data is unsigned integer.
 
 each numbers (3,5) mean maximum digits before/after '.'
 
-=item ASCII
+=item ascii
 
 check is the data consists of only ascii code.
 
-=item LENGTH
+=item length
 
 check the length of the data.
 
@@ -501,7 +537,7 @@ The following sample check if the length of the data is 4 or not.
     my $data = { str => 'aaaa' };
     my $validation_rule => [
         num => [
-            {'LENGTH' => 4}
+            {'length' => 4}
         ]
     ];
 
@@ -511,22 +547,22 @@ the range between 4 and 10.
     my $data = { str => 'aaaa' };
     my $validation_rule => [
         num => [
-            {'LENGTH' => [4, 10]}
+            {'length' => [4, 10]}
         ]
     ];
 
-=item HTTP_URL
+=item http_url
 
 verify it is a http(s)-url
 
     my $data = { url => 'http://somehost.com' };
     my $validation_rule => [
         url => [
-            'HTTP_URL'
+            'http_url'
         ]
     ];
 
-=item SELECTED_AT_LEAST
+=item selected_at_least
 
 verify the quantity of selected parameters is counted over allowed minimum.
 
@@ -538,82 +574,82 @@ verify the quantity of selected parameters is counted over allowed minimum.
     my $data = {hobby => ['music', 'movie' ]};
     my $validation_rule => [
         hobby => [
-            {SELECTED_AT_LEAST => 1}
+            {selected_at_least => 1}
         ]
     ];
 
-=item REGEX
+=item regex
 
 check with regular expression.
     
     my $data = {str => 'aaa'};
     my $validation_rule => [
         str => [
-            {REGEX => qr/a{3}/}
+            {regex => qr/a{3}/}
         ]
     ];
 
-=item DUPLICATION
+=item duplication
 
 check if the two data are same or not.
 
     my $data = {mail1 => 'a@somehost.com', mail2 => 'a@somehost.com'};
     my $validation_rule => [
         [qw/mail1 mail2/] => [
-            'DUPLICATION'
+            'duplication'
         ]
     ];
 
-=item EMAIL
+=item email
 
 check with L<Email::Valid>.
 
     my $data = {mail => 'a@somehost.com'};
     my $validation_rule => [
         mail => [
-            'EMAIL'
+            'email'
         ]
     ];
 
-=item EMAIL_MX
+=item email_mx
 
 check with L<Email::Valid>, including  mx check.
 
     my $data = {mail => 'a@somehost.com'};
     my $validation_rule => [
         mail => [
-            'EMAIL_MX'
+            'email_mx'
         ]
     ];
 
-=item EMAIL_LOOSE
+=item email_loose
 
 check with L<Email::Valid::Loose>.
 
     my $data = {mail => 'a.@somehost.com'};
     my $validation_rule => [
         mail => [
-            'EMAIL_LOOSE'
+            'email_loose'
         ]
     ];
 
-=item EMAIL_LOOSE_MX
+=item email_loose_mx
 
     my $data = {mail => 'a.@somehost.com'};
     my $validation_rule => [
         mail => [
-            'EMAIL_LOOSE'
+            'email_loose'
         ]
     ];
 
-=item DATE
+=item date
 
 check with L<Date::Calc>
 
     my $data = {year => '2009', month => '12', day => '13'};
     my $validation_rule => [
         {date => [qw/year month day/]} => [
-            'DATE'
+            'date'
         ]
     ];
     
@@ -624,7 +660,7 @@ You can specify options
     # Convert DateTime object
     my $validation_rule => [
         {date => [qw/year month day/]} => [
-            ['DATE', {'datetime_class' => 'DateTime', time_zone => 'Asia/Tokyo'}]
+            ['date', {'datetime_class' => 'DateTime', time_zone => 'Asia/Tokyo'}]
         ]
     ];
     
@@ -634,24 +670,24 @@ You can specify options
     # Convert Time::Piece object
     my $validation_rule => [
         {date => [qw/year month day/]} => [
-            ['DATE', {'datetime_class' => 'Time::Piece'}]
+            ['date', {'datetime_class' => 'Time::Piece'}]
         ]
     ];
     
     $vc->results->{date}; # Time::Piece object
 
-=item TIME
+=item time
 
 check with L<Date::Calc>
 
     my $data = {hour => '12', minute => '40', second => '13'};
     my $validation_rule => [
         [qw/hour minute second/] => [
-            'TIME'
+            'time'
         ]
     ];
 
-=item DATETIME
+=item datetime
 
 check with L<Date::Calc>
 
@@ -661,7 +697,7 @@ check with L<Date::Calc>
     };
     my $validation_rule => [
         {datetime => [qw/year month day hour minute second/]} => [
-            'DATETIME'
+            'datetime'
         ]
     ];
     
@@ -672,7 +708,7 @@ You can specify options
     # Convert DateTime object
     my $validation_rule => [
         {datetime => [qw/year month day hour minute second/]} => [
-            ['DATETIME', {'datetime_class' => 'DateTime', time_zone => 'Asia/Tokyo'}]
+            ['datetime', {'datetime_class' => 'DateTime', time_zone => 'Asia/Tokyo'}]
         ]
     ];
     
@@ -682,13 +718,13 @@ You can specify options
     # Convert Time::Piece object
     my $validation_rule => [
         {datetime => [qw/year month day hour minute second/]} => [
-            ['DATETIME', {'datetime_class' => 'Time::Piece'}]
+            ['datetime', {'datetime_class' => 'Time::Piece'}]
         ]
     ];
     
     $vc->results->{date}; # Time::Piece object
 
-=item DATETIME_STRPTIME
+=item datetime_strptime
 
 check with L<DateTime::Format::Strptime>.
 
@@ -696,13 +732,13 @@ check with L<DateTime::Format::Strptime>.
 
     my $validation_rule => [
         datetime => [
-            {'DATETIME' => '%Y-%m-%dT%T%z'}
+            {'datetime_strptime' => '%Y-%m-%dT%T%z'}
         ]
     ];
     
     $vc->results->{datetime}; # DateTime object
 
-=item DATETIME_FORMAT
+=item datetime_format
 
 check with DateTime::Format::***. for example, L<DateTime::Format::HTTP>,
 L<DateTime::Format::Mail>, L<DateTime::Format::MySQL> and etc.
@@ -711,73 +747,73 @@ L<DateTime::Format::Mail>, L<DateTime::Format::MySQL> and etc.
 
     my $validation_rule = [
         datetime => [
-            {DATETIME_FORMAT => 'MySQL'}
+            {datetime_format => 'MySQL'}
         ]
     ];
 
-=item GREATER_THAN
+=item greater_than
 
 numeric comparison
 
     my $validation_rule = [
         age => [
-            {GREATER_THAN => 25}
+            {greater_than => 25}
         ]
     ];
 
-=item LESS_THAN
+=item less_than
 
 numeric comparison
 
     my $validation_rule = [
         age => [
-            {LESS_THAN => 25}
+            {less_than => 25}
         ]
     ];
 
-=item EQUAL_TO
+=item equal_to
 
 numeric comparison
 
     my $validation_rule = [
         age => [
-            {EQUAL_TO => 25}
+            {equal_to => 25}
         ]
     ];
     
-=item BETWEEN
+=item between
 
 numeric comparison
 
     my $validation_rule = [
         age => [
-            {BETWEEN => [1, 20]}
+            {between => [1, 20]}
         ]
     ];
 
-=item IN_ARRAY
+=item in_array
 
 check if the food ordered is in menu
 
     my $validation_rule = [
         food => [
-            {IN_ARRAY => [qw/sushi bread apple/]}
+            {in_array => [qw/sushi bread apple/]}
         ]
     ];
 
-=item TRIM
+=item trim
 
 Trim leading and trailing white space
 
-=item TRIM_LEAD
+=item trim_lead
 
 Trim leading white space
 
-=item TRIM_TRAIL
+=item trim_trail
 
 Trim trailing white space
 
-=item TRIM_COLLAPSE
+=item trim_collapse
 
 Trim leading and trailing white space, and collapse all whitespace characters into a single space.
 

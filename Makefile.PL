@@ -9,7 +9,7 @@ WriteMakefile
           'PREREQ_PM' => {
                            'Validator::Custom' => '0.0301',
                            'Email::Valid' => '0.15',
-                           'Validator::Custom::Trim' => '0.0201',
+                           'Validator::Custom::Trim' => '0.0301',
                            'Time::Piece' => '1.15',
                            'DateTime::Format::Strptime' => '1.07',
                            'Test::More' => 0,
