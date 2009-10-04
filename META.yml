@@ -1,6 +1,6 @@
 ---
 name: Validator-Custom-HTMLForm
-version: 0.0102
+version: 0.0201
 author:
   - 'Yuki Kimoto <kimoto.yuki@gmail.com>'
 abstract: HTML Form validator based on Validator::Custom
@@ -13,18 +13,16 @@ requires:
   Email::Valid: 0.15
   Email::Valid::Loose: 0.04
   Time::Piece: 1.15
-  Validator::Custom: 0.021
-  Validator::Custom::Trim: 0
+  Validator::Custom: 0.0301
+  Validator::Custom::Trim: 0.0201
 build_requires:
   Test::More: 0
 provides:
   Validator::Custom::HTMLForm:
     file: lib/Validator/Custom/HTMLForm.pm
-    version: 0.0102
+    version: 0.0201
   Validator::Custom::HTMLForm::Constraints:
     file: lib/Validator/Custom/HTMLForm.pm
-no_index:
-  package: Validator::Custom::HTMLForm::Constraints
 generated_by: Module::Build version 0.31012
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.2.html

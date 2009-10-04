@@ -1014,9 +1014,9 @@ foreach my $exception_info (@exception_infos) {
 }
 
 sub validate_ok {
-    my ($test_name, $data, $validators, $invalid_keys, $results) = @_;
+    my ($test_name, $data, $validation_rule, $invalid_keys, $results) = @_;
     my $vc = Validator::Custom::HTMLForm->new;
-    $vc->validate($data, $validators);
+    $vc->validate($data, $validation_rule);
     is_deeply([$vc->invalid_keys], $invalid_keys, "$test_name invalid_keys");
     if (ref $results eq 'CODE') {
         $results->($vc);
@@ -1027,9 +1027,9 @@ sub validate_ok {
 }
 
 sub validate_exception {
-    my ($test_name, $data, $validators, $error) = @_;
+    my ($test_name, $data, $validation_rule, $error) = @_;
     my $vc = Validator::Custom::HTMLForm->new;
-    eval{$vc->validate($data, $validators)};
+    eval{$vc->validate($data, $validation_rule)};
     like($@, $error, "$test_name exception");
 }
 

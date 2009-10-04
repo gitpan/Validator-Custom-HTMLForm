@@ -1,7 +1,7 @@
 package Validator::Custom::HTMLForm;
 use base 'Validator::Custom';
 
-our $VERSION = '0.0102';
+our $VERSION = '0.0201';
 
 use warnings;
 use strict;
@@ -382,7 +382,7 @@ Version 0.0102
     }
     
     # Validators
-    my $validators = [
+    my $validation_rule = [
         name => [
             'NOT_BLANK',
             'ASCII',
@@ -416,7 +416,7 @@ Version 0.0102
     my $vc = Validator::Custom::HTMLForm->new;
     
     # Validate
-    $vc->validate($data, $validators);
+    $vc->validate($data, $validation_rule);
     
     # Get invalid key
     my @invalid_keys = $vc->invalid_keys;
@@ -425,7 +425,7 @@ Version 0.0102
     my $results = $vc->results;
     
     # Validators and error message
-    my $validators = [
+    my $validation_rule = [
         name => [
             ['NOT_BLANK',         'name must be exist'],
             ['ASCII',             'name must be acsii']
@@ -441,6 +441,8 @@ Version 0.0102
     my @errors = Validator::Custom::HTMLForm->new->validate($data,$validator)->errors;
 
 =head1 DESCRIPTION
+
+aaa
 
 This module usage is same as L<Validator::Custom>.
 
@@ -476,13 +478,13 @@ check if the data is unsigned integer.
 =item DECIMAL
     
     my $data = { num => '123.45678' };
-    my $validators => [
+    my $validation_rule => [
         num => [
             {'DECIMAL' => [3, 5]}
         ]
     ];
 
-    Validator::Custom::HTMLForm->new->validate($data,$validators);
+    Validator::Custom::HTMLForm->new->validate($data,$validation_rule);
 
 each numbers (3,5) mean maximum digits before/after '.'
 
@@ -497,7 +499,7 @@ check the length of the data.
 The following sample check if the length of the data is 4 or not.
 
     my $data = { str => 'aaaa' };
-    my $validators => [
+    my $validation_rule => [
         num => [
             {'LENGTH' => 4}
         ]
@@ -507,7 +509,7 @@ when you set two arguments, it checks if the length of data is in
 the range between 4 and 10.
     
     my $data = { str => 'aaaa' };
-    my $validators => [
+    my $validation_rule => [
         num => [
             {'LENGTH' => [4, 10]}
         ]
@@ -518,7 +520,7 @@ the range between 4 and 10.
 verify it is a http(s)-url
 
     my $data = { url => 'http://somehost.com' };
-    my $validators => [
+    my $validation_rule => [
         url => [
             'HTTP_URL'
         ]
@@ -534,7 +536,7 @@ verify the quantity of selected parameters is counted over allowed minimum.
     
     
     my $data = {hobby => ['music', 'movie' ]};
-    my $validators => [
+    my $validation_rule => [
         hobby => [
             {SELECTED_AT_LEAST => 1}
         ]
@@ -545,7 +547,7 @@ verify the quantity of selected parameters is counted over allowed minimum.
 check with regular expression.
     
     my $data = {str => 'aaa'};
-    my $validators => [
+    my $validation_rule => [
         str => [
             {REGEX => qr/a{3}/}
         ]
@@ -556,7 +558,7 @@ check with regular expression.
 check if the two data are same or not.
 
     my $data = {mail1 => 'a@somehost.com', mail2 => 'a@somehost.com'};
-    my $validators => [
+    my $validation_rule => [
         [qw/mail1 mail2/] => [
             'DUPLICATION'
         ]
@@ -567,7 +569,7 @@ check if the two data are same or not.
 check with L<Email::Valid>.
 
     my $data = {mail => 'a@somehost.com'};
-    my $validators => [
+    my $validation_rule => [
         mail => [
             'EMAIL'
         ]
@@ -578,7 +580,7 @@ check with L<Email::Valid>.
 check with L<Email::Valid>, including  mx check.
 
     my $data = {mail => 'a@somehost.com'};
-    my $validators => [
+    my $validation_rule => [
         mail => [
             'EMAIL_MX'
         ]
@@ -589,7 +591,7 @@ check with L<Email::Valid>, including  mx check.
 check with L<Email::Valid::Loose>.
 
     my $data = {mail => 'a.@somehost.com'};
-    my $validators => [
+    my $validation_rule => [
         mail => [
             'EMAIL_LOOSE'
         ]
@@ -598,7 +600,7 @@ check with L<Email::Valid::Loose>.
 =item EMAIL_LOOSE_MX
 
     my $data = {mail => 'a.@somehost.com'};
-    my $validators => [
+    my $validation_rule => [
         mail => [
             'EMAIL_LOOSE'
         ]
@@ -609,7 +611,7 @@ check with L<Email::Valid::Loose>.
 check with L<Date::Calc>
 
     my $data = {year => '2009', month => '12', day => '13'};
-    my $validators => [
+    my $validation_rule => [
         {date => [qw/year month day/]} => [
             'DATE'
         ]
@@ -620,7 +622,7 @@ check with L<Date::Calc>
 You can specify options
 
     # Convert DateTime object
-    my $validators => [
+    my $validation_rule => [
         {date => [qw/year month day/]} => [
             ['DATE', {'datetime_class' => 'DateTime', time_zone => 'Asia/Tokyo'}]
         ]
@@ -630,7 +632,7 @@ You can specify options
 
 
     # Convert Time::Piece object
-    my $validators => [
+    my $validation_rule => [
         {date => [qw/year month day/]} => [
             ['DATE', {'datetime_class' => 'Time::Piece'}]
         ]
@@ -643,7 +645,7 @@ You can specify options
 check with L<Date::Calc>
 
     my $data = {hour => '12', minute => '40', second => '13'};
-    my $validators => [
+    my $validation_rule => [
         [qw/hour minute second/] => [
             'TIME'
         ]
@@ -657,7 +659,7 @@ check with L<Date::Calc>
         year => '2009', month => '12',  day => '13'
         hour => '12',   minute => '40', second => '13'
     };
-    my $validators => [
+    my $validation_rule => [
         {datetime => [qw/year month day hour minute second/]} => [
             'DATETIME'
         ]
@@ -668,7 +670,7 @@ check with L<Date::Calc>
 You can specify options
 
     # Convert DateTime object
-    my $validators => [
+    my $validation_rule => [
         {datetime => [qw/year month day hour minute second/]} => [
             ['DATETIME', {'datetime_class' => 'DateTime', time_zone => 'Asia/Tokyo'}]
         ]
@@ -678,7 +680,7 @@ You can specify options
 
 
     # Convert Time::Piece object
-    my $validators => [
+    my $validation_rule => [
         {datetime => [qw/year month day hour minute second/]} => [
             ['DATETIME', {'datetime_class' => 'Time::Piece'}]
         ]
@@ -692,7 +694,7 @@ check with L<DateTime::Format::Strptime>.
 
     my $data = {datetime => '2006-04-26T19:09:21+0900'};
 
-    my $validators => [
+    my $validation_rule => [
         datetime => [
             {'DATETIME' => '%Y-%m-%dT%T%z'}
         ]
@@ -707,7 +709,7 @@ L<DateTime::Format::Mail>, L<DateTime::Format::MySQL> and etc.
 
     my $data = {datetime => '2004-04-26 19:09:21'};
 
-    my $validators = [
+    my $validation_rule = [
         datetime => [
             {DATETIME_FORMAT => 'MySQL'}
         ]
@@ -717,7 +719,7 @@ L<DateTime::Format::Mail>, L<DateTime::Format::MySQL> and etc.
 
 numeric comparison
 
-    my $validators = [
+    my $validation_rule = [
         age => [
             {GREATER_THAN => 25}
         ]
@@ -727,7 +729,7 @@ numeric comparison
 
 numeric comparison
 
-    my $validators = [
+    my $validation_rule = [
         age => [
             {LESS_THAN => 25}
         ]
@@ -737,7 +739,7 @@ numeric comparison
 
 numeric comparison
 
-    my $validators = [
+    my $validation_rule = [
         age => [
             {EQUAL_TO => 25}
         ]
@@ -747,7 +749,7 @@ numeric comparison
 
 numeric comparison
 
-    my $validators = [
+    my $validation_rule = [
         age => [
             {BETWEEN => [1, 20]}
         ]
@@ -757,7 +759,7 @@ numeric comparison
 
 check if the food ordered is in menu
 
-    my $validators = [
+    my $validation_rule = [
         food => [
             {IN_ARRAY => [qw/sushi bread apple/]}
         ]
@@ -838,3 +840,4 @@ under the same terms as Perl itself.
 =cut
 
 1; # End of Validator::Custom::HTMLForm
+

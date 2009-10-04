@@ -7,15 +7,12 @@ my $builder = Module::Build->new(
     license             => 'perl',
     dist_author         => 'Yuki Kimoto <kimoto.yuki@gmail.com>',
     dist_version_from   => 'lib/Validator/Custom/HTMLForm.pm',
-    no_index => { 
-        package   => 'Validator::Custom::HTMLForm::Constraints',
-    },
     build_requires => {
         'Test::More' => 0,
     },
     requires => {
-        'Validator::Custom' => 0.0210,
-        'Validator::Custom::Trim' => 0,
+        'Validator::Custom' => 0.0301,
+        'Validator::Custom::Trim' => 0.0201,
         'Date::Calc' => 5.4,
         'Email::Valid' => 0.15,
         'Email::Valid::Loose' => 0.04,
