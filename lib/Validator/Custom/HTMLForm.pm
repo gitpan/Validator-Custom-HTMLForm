@@ -1,7 +1,7 @@
 package Validator::Custom::HTMLForm;
 use base 'Validator::Custom';
 
-our $VERSION = '0.0301';
+our $VERSION = '0.0401';
 
 use warnings;
 use strict;
@@ -146,7 +146,7 @@ sub date {
     
     require Date::Calc;
     my $is_valid = Date::Calc::check_date($year, $month, $day) ? 1 : 0;
-    my $result;
+    my $product;
     if ($is_valid) {
         my $class = $options->{datetime_class} || '';
         if ($class eq 'DateTime') {
@@ -160,18 +160,18 @@ sub date {
             if ($options->{time_zone}) {
                 $date{time_zone} = $options->{time_zone};
             }
-            $result = $class->new(%date);
+            $product = $class->new(%date);
         }
         elsif ($class eq 'Time::Piece') {
             require Time::Piece;
-            $result = sprintf "%04d-%02d-%02d 00:00:00", $year, $month, $day;
-            $result = $class->strptime($result, "%Y-%m-%d %H:%M:%S");
+            $product = sprintf "%04d-%02d-%02d 00:00:00", $year, $month, $day;
+            $product = $class->strptime($product, "%Y-%m-%d %H:%M:%S");
         }
         else {
-            $result = sprintf "%04d-%02d-%02d 00:00:00", $year, $month, $day;
+            $product = sprintf "%04d-%02d-%02d 00:00:00", $year, $month, $day;
         }
     }
-    return ($is_valid, $result);
+    return ($is_valid, $product);
 }
 
 sub time {
@@ -181,9 +181,9 @@ sub time {
     $sec  ||= 0;
 
     require Date::Calc;
-    my $result = Date::Calc::check_time($hour, $min, $sec) ? 1 : 0;
-    my $time = $result ? sprintf("%02d:%02d:%02d", $hour, $min, $sec) : undef;
-    return ($result, $time);
+    my $product = Date::Calc::check_time($hour, $min, $sec) ? 1 : 0;
+    my $time = $product ? sprintf("%02d:%02d:%02d", $hour, $min, $sec) : undef;
+    return ($product, $time);
 }
 
 sub datetime {
@@ -392,7 +392,7 @@ Validator::Custom::HTMLForm - HTML Form validator based on Validator::Custom
 
 =head1 VERSION
 
-Version 0.0301
+Version 0.0401
 
 =cut
 
@@ -448,13 +448,13 @@ Version 0.0301
     my $vc = Validator::Custom::HTMLForm->new;
     
     # Validate
-    $vc->validate($data, $validation_rule);
+    my $result = $vc->validate($data, $validation_rule);
     
     # Get invalid key
-    my @invalid_keys = $vc->invalid_keys;
+    my @invalid_keys = $result->invalid_keys;
     
-    # Get converted result
-    my $results = $vc->results;
+    # Get converted product
+    my $products = $result->products;
     
     # Validation rule and error messages
     my $validation_rule = [
@@ -653,28 +653,28 @@ check with L<Date::Calc>
         ]
     ];
     
-    $vc->results->{date}; # 2009-12-13 00:00:00
+    $result->products->{date}; # 2009-12-13 00:00:00
 
 You can specify options
 
     # Convert DateTime object
     my $validation_rule => [
         {date => [qw/year month day/]} => [
-            ['date', {'datetime_class' => 'DateTime', time_zone => 'Asia/Tokyo'}]
+            {'date' => {'datetime_class' => 'DateTime', time_zone => 'Asia/Tokyo'}}
         ]
     ];
     
-    $vc->results->{date}; # DateTime object
+    $result->products->{date}; # DateTime object
 
 
     # Convert Time::Piece object
     my $validation_rule => [
         {date => [qw/year month day/]} => [
-            ['date', {'datetime_class' => 'Time::Piece'}]
+            {'date' => {'datetime_class' => 'Time::Piece'}}
         ]
     ];
     
-    $vc->results->{date}; # Time::Piece object
+    $result->products->{date}; # Time::Piece object
 
 =item time
 
@@ -701,28 +701,28 @@ check with L<Date::Calc>
         ]
     ];
     
-    $vc->results->{datetime}; # 2009-12-13 12:40:13
+    $result->products->{datetime}; # 2009-12-13 12:40:13
 
 You can specify options
 
     # Convert DateTime object
     my $validation_rule => [
         {datetime => [qw/year month day hour minute second/]} => [
-            ['datetime', {'datetime_class' => 'DateTime', time_zone => 'Asia/Tokyo'}]
+            {'datetime' => {'datetime_class' => 'DateTime', time_zone => 'Asia/Tokyo'}}
         ]
     ];
     
-    $vc->results->{date}; # DateTime object
+    $result->products->{date}; # DateTime object
 
 
     # Convert Time::Piece object
     my $validation_rule => [
         {datetime => [qw/year month day hour minute second/]} => [
-            ['datetime', {'datetime_class' => 'Time::Piece'}]
+            {'datetime' => {'datetime_class' => 'Time::Piece'}}
         ]
     ];
     
-    $vc->results->{date}; # Time::Piece object
+    $result->products->{date}; # Time::Piece object
 
 =item datetime_strptime
 
@@ -736,7 +736,7 @@ check with L<DateTime::Format::Strptime>.
         ]
     ];
     
-    $vc->results->{datetime}; # DateTime object
+    $result->products->{datetime}; # DateTime object
 
 =item datetime_format
 
