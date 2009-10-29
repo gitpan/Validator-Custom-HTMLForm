@@ -1,7 +1,7 @@
 package Validator::Custom::HTMLForm;
 use base 'Validator::Custom';
 
-our $VERSION = '0.0401';
+our $VERSION = '0.0402';
 
 use warnings;
 use strict;
@@ -392,7 +392,7 @@ Validator::Custom::HTMLForm - HTML Form validator based on Validator::Custom
 
 =head1 VERSION
 
-Version 0.0401
+Version 0.0402
 
 =cut
 
