@@ -1,3 +1,7 @@
+0.0501
+  delete upper case constraint (not backword compatible)
+  delete sp, space constraint (not backword compatible)
+  add define, not_space constraint
 0.0402
   catch up Validator::Custom 0.0605 version up
 0.0401

@@ -10,59 +10,63 @@ use DateTime::Format::Sample;
 
 my @infos = (
     [
-        'NOT_BLANK',
+        'defined',
         {
             k1 => undef,
             k2 => 'a',
-            k3 => ''
         },
         [
             k1 => [
-                'NOT_BLANK'
+                'defined'
             ],
             k2 => [
-                'NOT_BLANK'
+                'defined'
+            ],
+        ],
+        [qw/k1/]
+    ],
+    [
+        'not_space',
+        {
+            k1 => '',
+            k2 => ' ',
+            k3 => ' a '
+        },
+        [
+            k1 => [
+                'not_space'
+            ],
+            k2 => [
+                'not_space'
             ],
             k3 => [
-                'NOT_BLANK'
-            ],        
+                'not_space'
+            ],
         ],
-        [qw/k1 k3/]
+        [qw/k1 k2/]
     ],
     [
-        'SP',
+        'not_blank',
         {
-            k4 => 'a',,
-            k5 => 'a ',
+            k1 => '',
+            k2 => 'a',
+            k3 => ' '
         },
         [
-            k4 => [
-                'SP'
+            k1 => [
+                'not_blank'
             ],
-            k5 => [
-                'SP'
+            k2 => [
+                'not_blank'
             ],
-        ],
-        [qw/k4/]
-    ],
-    [
-        'SPACE',
-        {
-            k6 => 'a',,
-            k7 => 'a ',
-        },
-        [
-            k6 => [
-                'SPACE'
-            ],
-            k7 => [
-                'SPACE'
+            k3 => [
+                'not_blank'
             ],
         ],
-        [qw/k6/]
+        [qw/k1/]
     ],
     [
-        'INT',
+        'int',
         {
             k8  => '19',
             k9  => '-10',
@@ -71,22 +75,22 @@ my @infos = (
         },
         [
             k8 => [
-                'INT'
+                'int'
             ],
             k9 => [
-                'INT'
+                'int'
             ],
             k10 => [
-                'INT'
+                'int'
             ],
             k11 => [
-                'INT'
+                'int'
             ],
         ],
         [qw/k10 k11/]
     ],
     [
-        'UINT',
+        'uint',
         {
             k12  => '19',
             k13  => '-10',
@@ -95,22 +99,22 @@ my @infos = (
         },
         [
             k12 => [
-                'UINT'
+                'uint'
             ],
             k13 => [
-                'UINT'
+                'uint'
             ],
             k14 => [
-                'UINT'
+                'uint'
             ],
             k15 => [
-                'UINT'
+                'uint'
             ],
         ],
         [qw/k13 k14 k15/]
     ],
     [
-        'ASCII',
+        'ascii',
         {
             k16 => '!~',
             k17 => ' ',
@@ -118,38 +122,38 @@ my @infos = (
         },
         [
             k16 => [
-                'ASCII'
+                'ascii'
             ],
             k17 => [
-                'ASCII'
+                'ascii'
             ],
             k18 => [
-                'ASCII'
+                'ascii'
             ],
         ],
         [qw/k17 k18/]
     ],
     [
-        'LENGTH',
+        'length',
         {
             k19 => '111',
             k20 => '111',
         },
         [
             k19 => [
-                {'LENGTH' => [3, 4]},
-                {'LENGTH' => [2, 3]},
-                {'LENGTH' => [3]},
-                {'LENGTH' => 3},
+                {'length' => [3, 4]},
+                {'length' => [2, 3]},
+                {'length' => [3]},
+                {'length' => 3},
             ],
             k20 => [
-                {'LENGTH' => [4, 5]},
+                {'length' => [4, 5]},
             ]
         ],
         [qw/k20/],
     ],
     [
-        'DUPLICATION',
+        'duplication',
         {
             k1_1 => 'a',
             k1_2 => 'a',
@@ -159,32 +163,32 @@ my @infos = (
         },
         [
             {k1 => [qw/k1_1 k1_2/]} => [
-                'DUPLICATION'
+                'duplication'
             ],
             {k2 => [qw/k2_1 k2_2/]} => [
-                'DUPLICATION'
+                'duplication'
             ]
         ],
         [qw/k2/]
     ],
     [
-        'REGEX',
+        'regex',
         {
             k1 => 'aaa',
             k2 => 'aa',
         },
         [
             k1 => [
-                {'REGEX' => "a{3}"}
+                {'regex' => "a{3}"}
             ],
             k2 => [
-                {'REGEX' => "a{4}"}
+                {'regex' => "a{4}"}
             ]
         ],
         [qw/k2/]
     ],
     [
-        'EMAIL',
+        'email',
         {
             k1 => 'a@yahoo.com',
             k2 => 'a@b@c',
@@ -192,19 +196,19 @@ my @infos = (
         },
         [
             k1 => [
-                'EMAIL'
+                'email'
             ],
             k2 => [
-                'EMAIL'
+                'email'
             ],
             k3 => [
-                'EMAIL'
+                'email'
             ]
         ],
         [qw/k2 k3/]
     ],
     #[
-    #    'EMAIL_MX',
+    #    'email_mx',
     #    {
     #        k1 => 'a@yahoo.com',
     #        k2 => 'a@b@c',
@@ -212,19 +216,19 @@ my @infos = (
     #    },
     #    [
     #        k1 => [
-    #            'EMAIL_MX'
+    #            'email_mx'
     #        ],
     #        k2 => [
-    #            'EMAIL_MX'
+    #            'email_mx'
     #        ],
     #        k3 => [
-    #            'EMAIL_MX'
+    #            'email_mx'
     #        ]
     #    ],
     #    [qw/k2 k3/]
     #],
     [
-        'EMAIL_LOOSE',
+        'email_loose',
         {
             k1 => 'a.@yahoo.com',
             k2 => 'a@b@c',
@@ -232,19 +236,19 @@ my @infos = (
         },
         [
             k1 => [
-                'EMAIL_LOOSE'
+                'email_loose'
             ],
             k2 => [
-                'EMAIL_LOOSE'
+                'email_loose'
             ],
             k3 => [
-                'EMAIL_LOOSE'
+                'email_loose'
             ]
         ],
         [qw/k2 k3/]
     ],
     #[
-    #    'EMAIL_LOOSE_MX',
+    #    'email_loose_mx',
     #    {
     #        k1 => 'a.@yahoo.com',
     #        k2 => 'a@b@c',
@@ -252,19 +256,19 @@ my @infos = (
     #    },
     #    [
     #        k1 => [
-    #            'EMAIL_LOOSE_MX'
+    #            'email_loose_mx'
     #        ],
     #        k2 => [
-    #            'EMAIL_LOOSE_MX'
+    #            'email_loose_mx'
     #        ],
     #        k3 => [
-    #            'EMAIL_LOOSE_MX'
+    #            'email_loose_mx'
     #        ]
     #    ],
     #    [qw/k2 k3/]
     #],
     [
-        'DATE',
+        'date',
         {
             k1_year => 2000,
             k1_month  => 1,
@@ -288,19 +292,19 @@ my @infos = (
         },
         [
             {k1 => [qw/k1_year k1_month k1_day/]} => [
-                'DATE'
+                'date'
             ],
             {k2 => [qw/k2_year k2_month k2_day/]} => [
-                'DATE'
+                'date'
             ],
             {k3 => [qw/k3_year k3_month k3_day/]} => [
-                {'DATE' => {datetime_class => 'DateTime', time_zone => 'Asia/Tokyo'}}
+                {'date' => {datetime_class => 'DateTime', time_zone => 'Asia/Tokyo'}}
             ],
             {k4 => [qw/k4_year k4_month k4_day/]} => [
-                {'DATE' => {datetime_class => 'Time::Piece'}}
+                {'date' => {datetime_class => 'Time::Piece'}}
             ],
             {k5 => [qw/k5_year k5_month k5_day/]} => [
-                {'DATE' => {datetime_class => 'DateTime'}}
+                {'date' => {datetime_class => 'DateTime'}}
             ],
         ],
         [qw/k2/],
@@ -322,7 +326,7 @@ my @infos = (
         }
     ],
     [
-        'TIME',
+        'time',
         {
             k1_hour   => 1,
             k1_minute => 2,
@@ -338,13 +342,13 @@ my @infos = (
         },
         [
             {k1 => [qw/k1_hour k1_minute k1_second/]} => [
-                'TIME'
+                'time'
             ],
             {k2 => [qw/k2_hour k2_minute k2_second/]} => [
-                'TIME'
+                'time'
             ],
             {k3 => [qw/k3_hour k3_minute k3_second/]} => [
-                'TIME'
+                'time'
             ]
         ],
         [qw/k3/],
@@ -354,7 +358,7 @@ my @infos = (
         }
     ],
     [
-        'DATETIME',
+        'datetime',
         {
             k1_year => 2000,
             k1_month  => 1,
@@ -408,24 +412,24 @@ my @infos = (
         
         [
             {k1 => [qw/k1_year k1_month k1_day k1_hour k1_minute k1_second/ ]} => [
-                'DATETIME'
+                'datetime'
             ],
             {k2 => [qw/k2_year k2_month k2_day k2_hour k2_minute k2_second/ ]} => [
-                'DATETIME'
+                'datetime'
             ],
             {k3 => [qw/k3_year k3_month k3_day k3_hour k3_minute k3_second/ ]} => [
-                'DATETIME'
+                'datetime'
             ],
             {k4 => [qw/k4_year k4_month k4_day k4_hour k4_minute k4_second/ ]} => [
-                'DATETIME'],
+                'datetime'],
             {k5 => [qw/k5_year k5_month k5_day k5_hour k5_minute k5_second/ ]} => [
-                {'DATETIME' => {datetime_class => 'DateTime', time_zone => 'Asia/Tokyo'}}
+                {'datetime' => {datetime_class => 'DateTime', time_zone => 'Asia/Tokyo'}}
             ],
             {k6 => [qw/k6_year k6_month k6_day k6_hour k6_minute k6_second/ ]} => [
-                {'DATETIME' => {datetime_class => 'Time::Piece'}}
+                {'datetime' => {datetime_class => 'Time::Piece'}}
             ],
             {k7 => [qw/k5_year k7_month k7_day k7_hour k7_minute k7_second/ ]} => [
-                {'DATETIME' => {datetime_class => 'DateTime'}}
+                {'datetime' => {datetime_class => 'DateTime'}}
             ],
         ],
         [qw/k2 k3/],
@@ -455,23 +459,23 @@ my @infos = (
         }
     ],
     [
-        'HTTP_URL',
+        'http_url',
         {
             k1 => 'http://www.lost-season.jp/mt/',
             k2 => 'iii',
         },
         [
             k1 => [
-                'HTTP_URL'
+                'http_url'
             ],
             k2 => [
-                'HTTP_URL'
+                'http_url'
             ]
         ],
         [qw/k2/]
     ],
     [
-        'SELECTED_AT_LEAST',
+        'selected_at_least',
         {
             k1 => 1,
             k2 =>[1],
@@ -481,25 +485,25 @@ my @infos = (
         },
         [
             k1 => [
-                {SELECTED_AT_LEAST => 1}
+                {selected_at_least => 1}
             ],
             k2 => [
-                {SELECTED_AT_LEAST => 1}
+                {selected_at_least => 1}
             ],
             k3 => [
-                {SELECTED_AT_LEAST => 2}
+                {selected_at_least => 2}
             ],
             k4 => [
-                'SELECTED_AT_LEAST'
+                'selected_at_least'
             ],
             k5 => [
-                {'SELECTED_AT_LEAST' => 3}
+                {'selected_at_least' => 3}
             ]
         ],
         [qw/k5/]
     ],
     [
-        'GREATER_THAN',
+        'greater_than',
         {
             k1 => 5,
             k2 => 5,
@@ -507,19 +511,19 @@ my @infos = (
         },
         [
             k1 => [
-                {'GREATER_THAN' => 5}
+                {'greater_than' => 5}
             ],
             k2 => [
-                {'GREATER_THAN' => 4}
+                {'greater_than' => 4}
             ],
             k3 => [
-                {'GREATER_THAN' => 1}
+                {'greater_than' => 1}
             ]
         ],
         [qw/k1 k3/]
     ],
     [
-        'LESS_THAN',
+        'less_than',
         {
             k1 => 5,
             k2 => 5,
@@ -527,19 +531,19 @@ my @infos = (
         },
         [
             k1 => [
-                {'LESS_THAN' => 5}
+                {'less_than' => 5}
             ],
             k2 => [
-                {'LESS_THAN' => 6}
+                {'less_than' => 6}
             ],
             k3 => [
-                {'LESS_THAN' => 1}
+                {'less_than' => 1}
             ]
         ],
         [qw/k1 k3/]
     ],
     [
-        'EQUAL_TO',
+        'equal_to',
         {
             k1 => 5,
             k2 => 5,
@@ -547,19 +551,19 @@ my @infos = (
         },
         [
             k1 => [
-                {'EQUAL_TO' => 5}
+                {'equal_to' => 5}
             ],
             k2 => [
-                {'EQUAL_TO' => 4}
+                {'equal_to' => 4}
             ],
             k3 => [
-                {'EQUAL_TO' => 1}
+                {'equal_to' => 1}
             ]
         ],
         [qw/k2 k3/]
     ],
     [
-        'BETWEEN',
+        'between',
         {
             k1 => 5,
             k2 => 5,
@@ -569,25 +573,25 @@ my @infos = (
         },
         [
             k1 => [
-                {'BETWEEN' => [5, 6]}
+                {'between' => [5, 6]}
             ],
             k2 => [
-                {'BETWEEN' => [4, 5]}
+                {'between' => [4, 5]}
             ],
             k3 => [
-                {'BETWEEN' => [6, 7]}
+                {'between' => [6, 7]}
             ],
             k4 => [
-                {'BETWEEN' => [5, 5]}
+                {'between' => [5, 5]}
             ],
             k5 => [
-                {'BETWEEN' => [5, 5]}
+                {'between' => [5, 5]}
             ]
         ],
         [qw/k3 k5/]
     ],
     [
-        'DECIMAL',
+        'decimal',
         {
             k1 => '12.123',
             k2 => '12.123',
@@ -598,28 +602,28 @@ my @infos = (
         },
         [
             k1 => [
-                {'DECIMAL' => [2,3]}
+                {'decimal' => [2,3]}
             ],
             k2 => [
-                {'DECIMAL' => [1,3]}
+                {'decimal' => [1,3]}
             ],
             k3 => [
-                {'DECIMAL' => [2,2]}
+                {'decimal' => [2,2]}
             ],
             k4 => [
-                {'DECIMAL' => [2]}
+                {'decimal' => [2]}
             ],
             k5 => [
-                {'DECIMAL' => 2}
+                {'decimal' => 2}
             ],
             k6 => [
-                {'DECIMAL' => 2}
+                {'decimal' => 2}
             ]
         ],
         [qw/k2 k3 k5 k6/]
     ],
     [
-        'IN_ARRAY',
+        'in_array',
         {
             k1 => 'a',
             k2 => 'a',
@@ -627,19 +631,19 @@ my @infos = (
         },
         [
             k1 => [
-                {'IN_ARRAY' => [qw/a b/]}
+                {'in_array' => [qw/a b/]}
             ],
             k2 => [
-                {'IN_ARRAY' => [qw/b c/]}
+                {'in_array' => [qw/b c/]}
             ],
             k3 => [
-                {'IN_ARRAY' => [qw/b c/]}
+                {'in_array' => [qw/b c/]}
             ]
         ],
         [qw/k2 k3/]
     ],
     [
-        'DATETIME_FORMAT' => {
+        'datetime_format' => {
             k1 => '2000-01-02 03:04:05',
             k2 => '2000-01-02 03:04:05',
             k3 => '2000-01-02 03:04:05',
@@ -648,19 +652,19 @@ my @infos = (
         },
         [
             k1 => [
-                {'DATETIME_FORMAT' => 'Sample'}
+                {'datetime_format' => 'Sample'}
             ],
             k2 => [
-                {'DATETIME_FORMAT' => ['Sample']}
+                {'datetime_format' => ['Sample']}
             ],
             k3 => [
-                {'DATETIME_FORMAT' => ['Sample', {time_zone => 'Asia/Tokyo'}]}
+                {'datetime_format' => ['Sample', {time_zone => 'Asia/Tokyo'}]}
             ],
             k4 => [
-                {'DATETIME_FORMAT' => DateTime::Format::Sample->new}
+                {'datetime_format' => DateTime::Format::Sample->new}
             ],
             k5 => [
-                {'DATETIME_FORMAT' => 'Sample'}
+                {'datetime_format' => 'Sample'}
             ],
         ],
         [qw/k5/],
@@ -702,7 +706,7 @@ my @infos = (
         }
     ],
     [
-        'DATETIME_FORMAT' => {
+        'datetime_format' => {
             k1 => '01:02:03',
             k2 => '01:02:03',
             k3 => '01:02:03',
@@ -710,16 +714,16 @@ my @infos = (
         },        
         [
             k1 => [
-                {'DATETIME_STRPTIME' => '%T'}
+                {'datetime_strptime' => '%T'}
             ],
             k2 => [
-                {'DATETIME_STRPTIME' => ['%T']}
+                {'datetime_strptime' => ['%T']}
             ],
             k3 => [
-                {'DATETIME_STRPTIME' => ['%T', {time_zone => 'Asia/Tokyo'}]}
+                {'datetime_strptime' => ['%T', {time_zone => 'Asia/Tokyo'}]}
             ],
             k4 => [
-                {'DATETIME_STRPTIME' => '%T'}
+                {'datetime_strptime' => '%T'}
             ],
         ],
         [qw/k4/],
@@ -744,7 +748,7 @@ my @infos = (
         },
     ],
     [
-        'TRIM',
+        'trim',
         {
             int_param => ' 123 ',
             collapse  => "  \n a \r\n b\nc  \t",
@@ -753,16 +757,16 @@ my @infos = (
         },
         [
             int_param => [
-                'TRIM'
+                'trim'
             ],
             collapse  => [
-                'TRIM_COLLAPSE'
+                'trim_collapse'
             ],
             left      => [
-                'TRIM_LEAD'
+                'trim_lead'
             ],
             right     => [
-                'TRIM_TRAIL'
+                'trim_trail'
             ]
         ],
         [],
@@ -777,186 +781,186 @@ foreach my $info (@infos) {
 # exception
 my @exception_infos = (
     [
-        'DUPLICATION value1 undefined',
+        'duplication value1 undefined',
         {
             k1_1 => undef,
             k1_2 => 'a',
         },
         [
             [qw/k1_1 k1_2/] => [
-                ['DUPLICATION']
+                ['duplication']
             ],
         ],
-        qr/\Qvalidation "DUPLICATION" needs two keys of data./
+        qr/\QConstraint 'duplication' needs two keys of data/
     ],
     [
-        'DUPLICATION value2 undefined',
+        'duplication value2 undefined',
         {
             k2_1 => 'a',
             k2_2 => undef,
         },
         [
             [qw/k2_1 k2_2/] => [
-                ['DUPLICATION']
+                ['duplication']
             ]
         ],
-        qr/\Qvalidation "DUPLICATION" needs two keys of data./
+        qr/\QConstraint 'duplication' needs two keys of data/
     ],
     [
-        'LENGTH need parameter',
+        'length need parameter',
         {
             k1 => 'a',
         },
         [
             k1 => [
-                'LENGTH'
+                'length'
             ]
         ],
-        qr/\Qvalidation "LENGTH" needs one or two arguments./
+        qr/\QConstraint 'length' needs one or two arguments/
     ],
     [
-        'GREATER_THAN target undef',
+        'greater_than target undef',
         {
             k1 => 1
         },
         [
             k1 => [
-                'GREATER_THAN'
+                'greater_than'
             ]
         ],
-        qr/\QValidation GREATER_THAN needs a numeric argument./
+        qr/\QConstraint 'greater_than' needs a numeric argument/
     ],
     [
-        'GREATER_THAN not number',
+        'greater_than not number',
         {
             k1 => 1
         },
         [
             k1 => [
-                {'GREATER_THAN' => 'a'}
+                {'greater_than' => 'a'}
             ]
         ],
-        qr/\QValidation GREATER_THAN needs a numeric argument./
+        qr/\QConstraint 'greater_than' needs a numeric argument/
     ],
     [
-        'LESS_THAN target undef',
+        'less_than target undef',
         {
             k1 => 1
         },
         [
             k1 => [
-                'LESS_THAN'
+                'less_than'
             ]
         ],
-        qr/\QValidation LESS_THAN needs a numeric argument./
+        qr/\QConstraint 'less_than' needs a numeric argument/
     ],
     [
-        'LESS_THAN not number',
+        'less_than not number',
         {
             k1 => 1
         },
         [
             k1 => [
-                {'LESS_THAN' => 'a'}
+                {'less_than' => 'a'}
             ]
         ],
-        qr/\QValidation LESS_THAN needs a numeric argument./
+        qr/\QConstraint 'less_than' needs a numeric argument/
     ],
     [
-        'EQUAL_TO target undef',
+        'equal_to target undef',
         {
             k1 => 1
         },
         [
             k1 => [
-                'EQUAL_TO'
+                'equal_to'
             ]
         ],
-        qr/\QValidation EQUAL_TO needs a numeric argument./
+        qr/\QConstraint 'equal_to' needs a numeric argument/
     ],
     [
-        'EQUAL_TO not number',
+        'equal_to not number',
         {
             k1 => 1
         },
         [
             k1 => [
-                {'EQUAL_TO' => 'a'}
+                {'equal_to' => 'a'}
             ]
         ],
-        qr/\QValidation EQUAL_TO needs a numeric argument./
+        qr/\QConstraint 'equal_to' needs a numeric argument/
     ],
     [
-        'BETWEEN target undef',
+        'between target undef',
         {
             k1 => 1
         },
         [
             k1 => [
-                {'BETWEEN' => [undef, 1]}
+                {'between' => [undef, 1]}
             ]
         ],
-        qr/\QValidation BETWEEN needs two numeric arguments./
+        qr/\QConstraint 'between' needs two numeric arguments/
     ],
     [
-        'BETWEEN target undef or not number1',
+        'between target undef or not number1',
         {
             k1 => 1
         },
         [
             k1 => [
-                {'BETWEEN' => ['a', 1]}
+                {'between' => ['a', 1]}
             ]
         ],
-        qr/\QValidation BETWEEN needs two numeric arguments./
+        qr/\QConstraint 'between' needs two numeric arguments/
     ],
     [
-        'BETWEEN target undef or not number2',
+        'between target undef or not number2',
         {
             k1 => 1
         },
         [
             k1 => [
-                {'BETWEEN' => [1, undef]}
+                {'between' => [1, undef]}
             ]
         ],
-        qr/\QValidation BETWEEN needs two numeric arguments./
+        qr/\QConstraint 'between' needs two numeric arguments/
     ],
     [
-        'BETWEEN target undef or not number3',
+        'between target undef or not number3',
         {
             k1 => 1
         },
         [
             k1 => [
-                {'BETWEEN' => [1, 'a']}
+                {'between' => [1, 'a']}
             ]
         ],
-        qr/\QValidation BETWEEN needs two numeric arguments./
+        qr/\Qbetween' needs two numeric arguments/
     ],
     [
-        'DECIMAL target undef',
+        'decimal target undef',
         {
             k1 => 1
         },
         [
             k1 => [
-                'DECIMAL'
+                'decimal'
             ]
         ],
-        qr/\QValidation DECIMAL needs one or two numeric arguments./
+        qr/\QConstraint 'decimal' needs one or two numeric arguments/
     ],
     [
-        'DECIMAL target not number 1',
+        'decimal target not number 1',
         {
             k1 => 1
         },
         [
             k1 => [
-                {'DECIMAL' => ['a']}
+                {'decimal' => ['a']}
             ]
         ],
-        qr/\QValidation DECIMAL needs one or two numeric arguments./
+        qr/\QConstraint 'decimal' needs one or two numeric arguments/
     ],
     [
         'DECIMAL target not number 2',
@@ -965,47 +969,47 @@ my @exception_infos = (
         },
         [
             k1 => [
-                {'DECIMAL' => [1, 'a']}
+                {'decimal' => [1, 'a']}
             ]
         ],
-        qr/\QValidation DECIMAL needs one or two numeric arguments./
+        qr/\QConstraint 'decimal' needs one or two numeric arguments/
     ],
     
     [
-        'DATETIME_FORMAT no exist format',
+        'datetime_format no exist format',
         {
             k1 => '2000-01-02 03:04:05',
         },
         [
             k1 => [
-                'DATETIME_FORMAT'
+                'datetime_format'
             ],
         ],
-        qr/Validation DATETIME_FORMAT needs a format argument/
+        qr/Constraint 'datetime_format' needs a format argument/
     ],
     [
-        'DATETIME_FORMAT no exist format',
+        'datetime_format no exist format',
         {
             k1 => '2000-01-02 03:04:05',
         },
         [
             k1 => [
-                {'DATETIME_FORMAT' => 'NOOOOOOOOOOOOOOOOOOOOOOOOOOO'}
+                {'datetime_format' => 'NOOOOOOOOOOOOOOOOOOOOOOOOOOO'}
             ],
         ],
-        qr/Validation DATETIME_FORMAT: failed to require .*?NOOOOOOOOOOOOOOOOOOOOOOOOOOO/
+        qr/Constraint 'datetime_format': failed to require .*?NOOOOOOOOOOOOOOOOOOOOOOOOOOO/
     ],
     [
-        'DATETIME_STRPTIME no exist format',
+        'datetime_strptime no exist format',
         {
             k1 => '03:04:05',
         },
         [
             k1 => [
-                'DATETIME_STRPTIME'
+                'datetime_strptime'
             ],
         ],
-        qr/\QValidation DATETIME_STRPTIME needs a format argument/
+        qr/\QConstraint 'datetime_strptime' needs a format argument/
     ],
 );
 

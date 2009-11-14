@@ -1,17 +1,17 @@
 package Validator::Custom::HTMLForm;
 use base 'Validator::Custom';
 
-our $VERSION = '0.0402';
+our $VERSION = '0.0501';
 
 use warnings;
 use strict;
-use Carp ();
 
 use Validator::Custom::Trim;
 
 __PACKAGE__->add_constraint(
     Validator::Custom::Trim->constraints,
-    
+    defined           => \&Validator::Custom::HTMLForm::Constraints::defined,
+    not_space         => \&Validator::Custom::HTMLForm::Constraints::not_space,
     not_blank         => \&Validator::Custom::HTMLForm::Constraints::not_blank,
     sp                => \&Validator::Custom::HTMLForm::Constraints::sp,
     space             => \&Validator::Custom::HTMLForm::Constraints::space,
@@ -38,41 +38,17 @@ __PACKAGE__->add_constraint(
     in_array          => \&Validator::Custom::HTMLForm::Constraints::in_array,
     datetime_format   => \&Validator::Custom::HTMLForm::Constraints::datetime_format,
     datetime_strptime => \&Validator::Custom::HTMLForm::Constraints::datetime_strptime,
-    
-    # Provide FormValidator::Simple Compatibility
-    NOT_BLANK         => \&Validator::Custom::HTMLForm::Constraints::not_blank,
-    SP                => \&Validator::Custom::HTMLForm::Constraints::sp,
-    SPACE             => \&Validator::Custom::HTMLForm::Constraints::space,
-    INT               => \&Validator::Custom::HTMLForm::Constraints::int,
-    UINT              => \&Validator::Custom::HTMLForm::Constraints::uint,
-    ASCII             => \&Validator::Custom::HTMLForm::Constraints::ascii,
-    DUPLICATION       => \&Validator::Custom::HTMLForm::Constraints::duplication,
-    LENGTH            => \&Validator::Custom::HTMLForm::Constraints::length,
-    REGEX             => \&Validator::Custom::HTMLForm::Constraints::regex,
-    EMAIL             => \&Validator::Custom::HTMLForm::Constraints::email,
-    EMAIL_MX          => \&Validator::Custom::HTMLForm::Constraints::email_mx,
-    EMAIL_LOOSE       => \&Validator::Custom::HTMLForm::Constraints::email_loose,
-    EMAIL_LOOSE_MX    => \&Validator::Custom::HTMLForm::Constraints::email_loose_mx,
-    DATE              => \&Validator::Custom::HTMLForm::Constraints::date,
-    TIME              => \&Validator::Custom::HTMLForm::Constraints::time,
-    DATETIME          => \&Validator::Custom::HTMLForm::Constraints::datetime,
-    HTTP_URL          => \&Validator::Custom::HTMLForm::Constraints::http_url,
-    SELECTED_AT_LEAST => \&Validator::Custom::HTMLForm::Constraints::selected_at_least,
-    GREATER_THAN      => \&Validator::Custom::HTMLForm::Constraints::greater_than,
-    LESS_THAN         => \&Validator::Custom::HTMLForm::Constraints::less_than,
-    EQUAL_TO          => \&Validator::Custom::HTMLForm::Constraints::equal_to,
-    BETWEEN           => \&Validator::Custom::HTMLForm::Constraints::between,
-    DECIMAL           => \&Validator::Custom::HTMLForm::Constraints::decimal,
-    IN_ARRAY          => \&Validator::Custom::HTMLForm::Constraints::in_array,
-    DATETIME_FORMAT   => \&Validator::Custom::HTMLForm::Constraints::datetime_format,
-    DATETIME_STRPTIME => \&Validator::Custom::HTMLForm::Constraints::datetime_strptime,
 );
 
 package Validator::Custom::HTMLForm::Constraints;
+use strict;
+use warnings;
+use Carp 'croak';
 
-sub not_blank {defined $_[0] && $_[0] ne '' ? 1 : 0}
-sub sp    {$_[0] =~ /\s/                ? 1 : 0}
-sub space {$_[0] =~ /\s/                ? 1 : 0}
+sub defined   {defined $_[0]}
+sub not_blank {$_[0] ne ''      ? 1 : 0}
+sub not_space {$_[0] !~ '^\s*$' ? 1 : 0}
+
 sub int   {$_[0] =~ /^\-?[\d]+$/        ? 1 : 0}
 sub uint  {$_[0] =~ /^\d+$/             ? 1 : 0}
 sub ascii {$_[0] =~ /^[\x21-\x7E]+$/    ? 1 : 0}
@@ -80,7 +56,7 @@ sub ascii {$_[0] =~ /^[\x21-\x7E]+$/    ? 1 : 0}
 sub duplication {
     my $values = shift;
     
-    Carp::croak(qq/validation "DUPLICATION" needs two keys of data./)
+    croak "Constraint 'duplication' needs two keys of data"
       unless defined $values->[0] && defined $values->[1];
     
     return $values->[0] eq $values->[1] ? 1 : 0;
@@ -88,6 +64,7 @@ sub duplication {
 
 sub length {
     my ($value, $args) = @_;
+    
     
     my $min;
     my $max;
@@ -99,7 +76,7 @@ sub length {
         $min = $args;
     }
     
-    Carp::croak(qq/validation "LENGTH" needs one or two arguments./)
+    croak "Constraint 'length' needs one or two arguments"
       unless defined $min;
     
     my $length  = length $value;
@@ -245,7 +222,7 @@ sub selected_at_least {
 sub greater_than {
     my ($value, $target) = @_;
     
-    Carp::croak(qq/Validation GREATER_THAN needs a numeric argument./)
+    croak "Constraint 'greater_than' needs a numeric argument"
       unless defined $target && $target =~ /^\d+$/;
     
     return 0 unless $value =~ /^\d+$/;
@@ -255,7 +232,7 @@ sub greater_than {
 sub less_than {
     my ($value, $target) = @_;
     
-    Carp::croak(qq/Validation LESS_THAN needs a numeric argument./)
+    croak "Constraint 'less_than' needs a numeric argument"
       unless defined $target && $target =~ /^\d+$/;
     
     return 0 unless $value =~ /^\d+$/;
@@ -265,7 +242,7 @@ sub less_than {
 sub equal_to {
     my ($value, $target) = @_;
     
-    Carp::croak(qq/Validation EQUAL_TO needs a numeric argument./)
+    croak "Constraint 'equal_to' needs a numeric argument"
       unless defined $target && $target =~ /^\d+$/;
     
     return 0 unless $value =~ /^\d+$/;
@@ -276,7 +253,7 @@ sub between {
     my ($value, $args) = @_;
     my ($start, $end) = @$args;
     
-    Carp::croak(qq/Validation BETWEEN needs two numeric arguments./)
+    croak "Constraint 'between' needs two numeric arguments"
       unless defined($start) && $start =~ /^\d+$/ && defined($end) && $end =~ /^\d+$/;
     
     return 0 unless $value =~ /^\d+$/;
@@ -286,14 +263,14 @@ sub between {
 sub decimal {
     my ($value, $digits) = @_;
     
-    Carp::croak(qq/Validation DECIMAL needs one or two numeric arguments./)
+    croak "Constraint 'decimal' needs one or two numeric arguments"
       unless $digits;
     
     $digits = [$digits] unless ref $digits eq 'ARRAY';
     
     $digits->[1] ||= 0;
     
-    Carp::croak(qq/Validation DECIMAL needs one or two numeric arguments./)
+    croak "Constraint 'decimal' needs one or two numeric arguments"
       unless $digits->[0] =~ /^\d+$/ && $digits->[1] =~ /^\d+$/;
     
     return 0 unless $value =~ /^\d+(\.\d+)?$/;
@@ -322,7 +299,7 @@ sub datetime_format {
     
     $options ||= {};        
     
-    Carp::croak(qq/Validation DATETIME_FORMAT needs a format argument./)
+    croak "Constraint 'datetime_format' needs a format argument"
       unless $format;
     
     my $module;
@@ -332,7 +309,7 @@ sub datetime_format {
     else {
         $module = "DateTime::Format::$format";
         eval "require $module";
-        Carp::croak(qq/Validation DATETIME_FORMAT: failed to require $module. "$@"/)
+        croak "Constraint 'datetime_format': failed to require $module. $@"
           if $@;
     }
     my $dt;
@@ -361,7 +338,7 @@ sub datetime_strptime {
     
     $options ||= {};
     
-    Carp::croak(qq/Validation DATETIME_STRPTIME needs a format argument./)
+    croak "Constraint 'datetime_strptime' needs a format argument"
       unless $format;
     my $dt;
     
@@ -390,13 +367,17 @@ package Validator::Custom::HTMLForm;
 
 Validator::Custom::HTMLForm - HTML Form validator based on Validator::Custom
 
-=head1 VERSION
+=head1 Version
 
-Version 0.0402
+Version 0.0501
 
 =cut
 
-=head1 SYNOPSIS
+=head1 Caution
+
+This module is yet experimental stage.
+
+=head1 Synopsis
 
     use Validator::Custom::HTMLForm;
     
@@ -472,29 +453,31 @@ Version 0.0402
     # Get error message on one linear
     my @errors = Validator::Custom::HTMLForm->new->validate($data,$validator)->errors;
 
-=head1 DESCRIPTION
+=head1 Description
 
-aaa
+This module is L<Validator::Custom> subclass.
 
-This module usage is same as L<Validator::Custom>.
+See also L<Validator::Custom>.
 
-See L<Validator::Custom> document.
+and L<Validator::Custom::Trim> constraint function is available.
 
-=head1 Constraints
+See also L<Validator::Custom::Trim>.
 
-The following constraints is available
-
-Upper case is also availabule, like NOT_BLANK
+=head1 Constraint functions
 
 =over 4
 
-=item SP
+=item defined
 
-check if the data containe space.
+check if the data is defined.
 
 =item not_blank
 
 check if the data is not blank.
+
+=item not_space
+
+check if the data do not containe space.
 
 =item int
 
