@@ -1,15 +1,13 @@
 package Validator::Custom::HTMLForm;
 use base 'Validator::Custom';
 
-our $VERSION = '0.0501';
-
 use warnings;
 use strict;
 
 use Validator::Custom::Trim;
 
 __PACKAGE__->add_constraint(
-    Validator::Custom::Trim->constraints,
+    %{Validator::Custom::Trim->constraints},
     defined           => \&Validator::Custom::HTMLForm::Constraints::defined,
     not_space         => \&Validator::Custom::HTMLForm::Constraints::not_space,
     not_blank         => \&Validator::Custom::HTMLForm::Constraints::not_blank,
@@ -369,9 +367,11 @@ Validator::Custom::HTMLForm - HTML Form validator based on Validator::Custom
 
 =head1 Version
 
-Version 0.0501
+Version 0.0502
 
 =cut
+
+our $VERSION = '0.0502';
 
 =head1 Caution
 

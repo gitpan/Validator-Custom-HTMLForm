@@ -1026,7 +1026,7 @@ sub validate_ok {
         $products->($r);
     }
     elsif($products) {
-        is_deeply({$r->products}, $products, "$test_name products");
+        is_deeply($r->products, $products, "$test_name products");
     }
 }
 
