@@ -1,9 +1,9 @@
 ---
 name: Validator-Custom-HTMLForm
-version: 0.0502
+version: 0.0503
 author:
   - 'Yuki Kimoto <kimoto.yuki@gmail.com>'
-abstract: HTML Form validator based on Validator::Custom
+abstract: HTML Form validator
 license: perl
 resources:
   license: ~
@@ -13,14 +13,14 @@ requires:
   Email::Valid: 0.15
   Email::Valid::Loose: 0.04
   Time::Piece: 1.15
-  Validator::Custom: 0.0605
+  Validator::Custom: 0.0801
   Validator::Custom::Trim: 0.0401
 build_requires:
   Test::More: 0
 provides:
   Validator::Custom::HTMLForm:
     file: lib/Validator/Custom/HTMLForm.pm
-    version: 0.0502
+    version: 0.0503
   Validator::Custom::HTMLForm::Constraints:
     file: lib/Validator/Custom/HTMLForm.pm
 generated_by: Module::Build version 0.31012

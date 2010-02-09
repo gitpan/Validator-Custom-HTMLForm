@@ -1,8 +1,9 @@
 package Validator::Custom::HTMLForm;
-use base 'Validator::Custom';
 
 use warnings;
 use strict;
+
+use base 'Validator::Custom';
 
 use Validator::Custom::Trim;
 
@@ -39,8 +40,10 @@ __PACKAGE__->add_constraint(
 );
 
 package Validator::Custom::HTMLForm::Constraints;
+
 use strict;
 use warnings;
+
 use Carp 'croak';
 
 sub defined   {defined $_[0]}
@@ -363,21 +366,21 @@ package Validator::Custom::HTMLForm;
 
 =head1 NAME
 
-Validator::Custom::HTMLForm - HTML Form validator based on Validator::Custom
+Validator::Custom::HTMLForm - HTML Form validator
 
 =head1 Version
 
-Version 0.0502
+Version 0.0503
 
 =cut
 
-our $VERSION = '0.0502';
+our $VERSION = '0.0503';
 
-=head1 Caution
+=head1 STATE
 
-This module is yet experimental stage.
+L<Validator::Custom::HTMLForm> is not stable.
 
-=head1 Synopsis
+=head1 SYNOPSIS
 
     use Validator::Custom::HTMLForm;
     
@@ -395,7 +398,7 @@ This module is yet experimental stage.
     }
     
     # Validation rule
-    my $validation_rule = [
+    my $rule = [
         name => [
             'not_blank',
             'ascii',
@@ -429,41 +432,16 @@ This module is yet experimental stage.
     my $vc = Validator::Custom::HTMLForm->new;
     
     # Validate
-    my $result = $vc->validate($data, $validation_rule);
-    
-    # Get invalid key
-    my @invalid_keys = $result->invalid_keys;
-    
-    # Get converted product
-    my $products = $result->products;
-    
-    # Validation rule and error messages
-    my $validation_rule = [
-        name => [
-            ['not_blank',         'name must be exist'],
-            ['ascii',             'name must be acsii']
-            [{length => [1, 30]}, 'name must be length 1 to 30']
-        ],
-        age => [
-            ['not_blank',         'age must be exist'],
-            ['int',               'age must be integer value']
-        ],
-    ]
-    
-    # Get error message on one linear
-    my @errors = Validator::Custom::HTMLForm->new->validate($data,$validator)->errors;
+    my $result = $vc->validate($data, $rule);
 
-=head1 Description
+=head1 METHODS
 
 This module is L<Validator::Custom> subclass.
-
-See also L<Validator::Custom>.
-
-and L<Validator::Custom::Trim> constraint function is available.
-
-See also L<Validator::Custom::Trim>.
+All methods of L<Validator::Custom> is available.
 
 =head1 Constraint functions
+
+L<Validator::Custom::Trim> all constraint functions are available
 
 =over 4
 
@@ -497,13 +475,13 @@ check if the data is unsigned integer.
 =item decimal
     
     my $data = { num => '123.45678' };
-    my $validation_rule => [
+    my $rule => [
         num => [
             {'decimal' => [3, 5]}
         ]
     ];
 
-    Validator::Custom::HTMLForm->new->validate($data,$validation_rule);
+    Validator::Custom::HTMLForm->new->validate($data,$rule);
 
 each numbers (3,5) mean maximum digits before/after '.'
 
@@ -518,7 +496,7 @@ check the length of the data.
 The following sample check if the length of the data is 4 or not.
 
     my $data = { str => 'aaaa' };
-    my $validation_rule => [
+    my $rule => [
         num => [
             {'length' => 4}
         ]
@@ -528,7 +506,7 @@ when you set two arguments, it checks if the length of data is in
 the range between 4 and 10.
     
     my $data = { str => 'aaaa' };
-    my $validation_rule => [
+    my $rule => [
         num => [
             {'length' => [4, 10]}
         ]
@@ -539,7 +517,7 @@ the range between 4 and 10.
 verify it is a http(s)-url
 
     my $data = { url => 'http://somehost.com' };
-    my $validation_rule => [
+    my $rule => [
         url => [
             'http_url'
         ]
@@ -555,7 +533,7 @@ verify the quantity of selected parameters is counted over allowed minimum.
     
     
     my $data = {hobby => ['music', 'movie' ]};
-    my $validation_rule => [
+    my $rule => [
         hobby => [
             {selected_at_least => 1}
         ]
@@ -566,7 +544,7 @@ verify the quantity of selected parameters is counted over allowed minimum.
 check with regular expression.
     
     my $data = {str => 'aaa'};
-    my $validation_rule => [
+    my $rule => [
         str => [
             {regex => qr/a{3}/}
         ]
@@ -577,7 +555,7 @@ check with regular expression.
 check if the two data are same or not.
 
     my $data = {mail1 => 'a@somehost.com', mail2 => 'a@somehost.com'};
-    my $validation_rule => [
+    my $rule => [
         [qw/mail1 mail2/] => [
             'duplication'
         ]
@@ -588,7 +566,7 @@ check if the two data are same or not.
 check with L<Email::Valid>.
 
     my $data = {mail => 'a@somehost.com'};
-    my $validation_rule => [
+    my $rule => [
         mail => [
             'email'
         ]
@@ -599,7 +577,7 @@ check with L<Email::Valid>.
 check with L<Email::Valid>, including  mx check.
 
     my $data = {mail => 'a@somehost.com'};
-    my $validation_rule => [
+    my $rule => [
         mail => [
             'email_mx'
         ]
@@ -610,7 +588,7 @@ check with L<Email::Valid>, including  mx check.
 check with L<Email::Valid::Loose>.
 
     my $data = {mail => 'a.@somehost.com'};
-    my $validation_rule => [
+    my $rule => [
         mail => [
             'email_loose'
         ]
@@ -619,7 +597,7 @@ check with L<Email::Valid::Loose>.
 =item email_loose_mx
 
     my $data = {mail => 'a.@somehost.com'};
-    my $validation_rule => [
+    my $rule => [
         mail => [
             'email_loose'
         ]
@@ -630,7 +608,7 @@ check with L<Email::Valid::Loose>.
 check with L<Date::Calc>
 
     my $data = {year => '2009', month => '12', day => '13'};
-    my $validation_rule => [
+    my $rule => [
         {date => [qw/year month day/]} => [
             'date'
         ]
@@ -641,7 +619,7 @@ check with L<Date::Calc>
 You can specify options
 
     # Convert DateTime object
-    my $validation_rule => [
+    my $rule => [
         {date => [qw/year month day/]} => [
             {'date' => {'datetime_class' => 'DateTime', time_zone => 'Asia/Tokyo'}}
         ]
@@ -651,7 +629,7 @@ You can specify options
 
 
     # Convert Time::Piece object
-    my $validation_rule => [
+    my $rule => [
         {date => [qw/year month day/]} => [
             {'date' => {'datetime_class' => 'Time::Piece'}}
         ]
@@ -664,7 +642,7 @@ You can specify options
 check with L<Date::Calc>
 
     my $data = {hour => '12', minute => '40', second => '13'};
-    my $validation_rule => [
+    my $rule => [
         [qw/hour minute second/] => [
             'time'
         ]
@@ -678,7 +656,7 @@ check with L<Date::Calc>
         year => '2009', month => '12',  day => '13'
         hour => '12',   minute => '40', second => '13'
     };
-    my $validation_rule => [
+    my $rule => [
         {datetime => [qw/year month day hour minute second/]} => [
             'datetime'
         ]
@@ -689,7 +667,7 @@ check with L<Date::Calc>
 You can specify options
 
     # Convert DateTime object
-    my $validation_rule => [
+    my $rule => [
         {datetime => [qw/year month day hour minute second/]} => [
             {'datetime' => {'datetime_class' => 'DateTime', time_zone => 'Asia/Tokyo'}}
         ]
@@ -699,7 +677,7 @@ You can specify options
 
 
     # Convert Time::Piece object
-    my $validation_rule => [
+    my $rule => [
         {datetime => [qw/year month day hour minute second/]} => [
             {'datetime' => {'datetime_class' => 'Time::Piece'}}
         ]
@@ -713,7 +691,7 @@ check with L<DateTime::Format::Strptime>.
 
     my $data = {datetime => '2006-04-26T19:09:21+0900'};
 
-    my $validation_rule => [
+    my $rule => [
         datetime => [
             {'datetime_strptime' => '%Y-%m-%dT%T%z'}
         ]
@@ -728,7 +706,7 @@ L<DateTime::Format::Mail>, L<DateTime::Format::MySQL> and etc.
 
     my $data = {datetime => '2004-04-26 19:09:21'};
 
-    my $validation_rule = [
+    my $rule = [
         datetime => [
             {datetime_format => 'MySQL'}
         ]
@@ -738,7 +716,7 @@ L<DateTime::Format::Mail>, L<DateTime::Format::MySQL> and etc.
 
 numeric comparison
 
-    my $validation_rule = [
+    my $rule = [
         age => [
             {greater_than => 25}
         ]
@@ -748,7 +726,7 @@ numeric comparison
 
 numeric comparison
 
-    my $validation_rule = [
+    my $rule = [
         age => [
             {less_than => 25}
         ]
@@ -758,7 +736,7 @@ numeric comparison
 
 numeric comparison
 
-    my $validation_rule = [
+    my $rule = [
         age => [
             {equal_to => 25}
         ]
@@ -768,7 +746,7 @@ numeric comparison
 
 numeric comparison
 
-    my $validation_rule = [
+    my $rule = [
         age => [
             {between => [1, 20]}
         ]
@@ -778,27 +756,11 @@ numeric comparison
 
 check if the food ordered is in menu
 
-    my $validation_rule = [
+    my $rule = [
         food => [
             {in_array => [qw/sushi bread apple/]}
         ]
     ];
-
-=item trim
-
-Trim leading and trailing white space
-
-=item trim_lead
-
-Trim leading white space
-
-=item trim_trail
-
-Trim trailing white space
-
-=item trim_collapse
-
-Trim leading and trailing white space, and collapse all whitespace characters into a single space.
 
 =back
 
@@ -806,47 +768,11 @@ Trim leading and trailing white space, and collapse all whitespace characters in
 
 Yuki Kimoto, C<< <kimoto.yuki at gmail.com> >>
 
-=head1 BUGS
-
-Please report any bugs or feature requests to C<bug-validator-custom-htmlform at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Validator-Custom-HTMLForm>.  I will be notified, and then you'll
-automatically be notified of progress on your bug as I make changes.
-
-=head1 SUPPORT
-
-You can find documentation for this module with the perldoc command.
-
-    perldoc Validator::Custom::HTMLForm
-
-
-You can also look for information at:
-
-=over 4
-
-=item * RT: CPAN's request tracker
-
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Validator-Custom-HTMLForm>
-
-=item * AnnoCPAN: Annotated CPAN documentation
-
-L<http://annocpan.org/dist/Validator-Custom-HTMLForm>
-
-=item * CPAN Ratings
-
-L<http://cpanratings.perl.org/d/Validator-Custom-HTMLForm>
-
-=item * Search CPAN
-
-L<http://search.cpan.org/dist/Validator-Custom-HTMLForm/>
-
-=back
-
-
 =head1 SEE ALSO
 
 L<Validator::Custom>, L<Validator::Custom::Trim>
 
-L<FormValidator::Custom>, L<Data::FormValidator>
+L<FormValidator::Simple>, L<Data::FormValidator>
 
 =head1 COPYRIGHT & LICENSE
 
@@ -855,8 +781,5 @@ Copyright 2009 Yuki Kimoto, all rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 
-
 =cut
-
-1; # End of Validator::Custom::HTMLForm
 

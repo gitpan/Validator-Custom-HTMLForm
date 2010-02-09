@@ -7,7 +7,7 @@ WriteMakefile
           'EXE_FILES' => [],
           'VERSION_FROM' => 'lib/Validator/Custom/HTMLForm.pm',
           'PREREQ_PM' => {
-                           'Validator::Custom' => '0.0605',
+                           'Validator::Custom' => '0.0801',
                            'Email::Valid' => '0.15',
                            'Validator::Custom::Trim' => '0.0401',
                            'Time::Piece' => '1.15',
