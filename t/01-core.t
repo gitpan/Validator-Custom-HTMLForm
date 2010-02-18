@@ -10,6 +10,22 @@ use DateTime::Format::Sample;
 
 my @infos = (
     [
+        'not_defined',
+        {
+            k1 => undef,
+            k2 => 'a',
+        },
+        [
+            k1 => [
+                'not_defined'
+            ],
+            k2 => [
+                'not_defined'
+            ],
+        ],
+        [qw/k2/]
+    ],
+    [
         'defined',
         {
             k1 => undef,
@@ -65,6 +81,26 @@ my @infos = (
         ],
         [qw/k1/]
     ],
+    [
+        'blank',
+        {
+            k1 => '',
+            k2 => 'a',
+            k3 => ' '
+        },
+        [
+            k1 => [
+                'blank'
+            ],
+            k2 => [
+                'blank'
+            ],
+            k3 => [
+                'blank'
+            ],
+        ],
+        [qw/k2 k3/]
+    ],    
     [
         'int',
         {

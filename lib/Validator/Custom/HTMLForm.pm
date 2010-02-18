@@ -9,11 +9,11 @@ use Validator::Custom::Trim;
 
 __PACKAGE__->add_constraint(
     %{Validator::Custom::Trim->constraints},
+    not_defined         => \&Validator::Custom::HTMLForm::Constraints::not_defined,
     defined           => \&Validator::Custom::HTMLForm::Constraints::defined,
     not_space         => \&Validator::Custom::HTMLForm::Constraints::not_space,
     not_blank         => \&Validator::Custom::HTMLForm::Constraints::not_blank,
-    sp                => \&Validator::Custom::HTMLForm::Constraints::sp,
-    space             => \&Validator::Custom::HTMLForm::Constraints::space,
+    blank             => \&Validator::Custom::HTMLForm::Constraints::blank,
     int               => \&Validator::Custom::HTMLForm::Constraints::int,
     uint              => \&Validator::Custom::HTMLForm::Constraints::uint,
     ascii             => \&Validator::Custom::HTMLForm::Constraints::ascii,
@@ -46,13 +46,15 @@ use warnings;
 
 use Carp 'croak';
 
-sub defined   {defined $_[0]}
-sub not_blank {$_[0] ne ''      ? 1 : 0}
-sub not_space {$_[0] !~ '^\s*$' ? 1 : 0}
+sub not_defined { !defined $_[0] }
+sub defined   { defined $_[0] }
+sub blank     { $_[0] eq '' }
+sub not_blank { $_[0] ne '' }
+sub not_space { $_[0] !~ '^\s*$' ? 1 : 0 }
 
-sub int   {$_[0] =~ /^\-?[\d]+$/        ? 1 : 0}
-sub uint  {$_[0] =~ /^\d+$/             ? 1 : 0}
-sub ascii {$_[0] =~ /^[\x21-\x7E]+$/    ? 1 : 0}
+sub int   { $_[0] =~ /^\-?[\d]+$/        ? 1 : 0 }
+sub uint  { $_[0] =~ /^\d+$/             ? 1 : 0 }
+sub ascii { $_[0] =~ /^[\x21-\x7E]+$/    ? 1 : 0 }
 
 sub duplication {
     my $values = shift;
@@ -370,11 +372,11 @@ Validator::Custom::HTMLForm - HTML Form validator
 
 =head1 Version
 
-Version 0.0503
+Version 0.0601
 
 =cut
 
-our $VERSION = '0.0503';
+our $VERSION = '0.0601';
 
 =head1 STATE
 
@@ -449,9 +451,17 @@ L<Validator::Custom::Trim> all constraint functions are available
 
 check if the data is defined.
 
+=item undefined
+
+check if the data is undefined.
+
 =item not_blank
 
 check if the data is not blank.
+
+=item blank
+
+check if the is blank.
 
 =item not_space
 
