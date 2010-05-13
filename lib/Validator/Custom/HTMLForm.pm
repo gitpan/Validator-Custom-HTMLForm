@@ -7,7 +7,7 @@ use base 'Validator::Custom';
 
 use Validator::Custom::Trim;
 
-__PACKAGE__->add_constraint(
+__PACKAGE__->register_constraint(
     %{Validator::Custom::Trim->constraints},
     not_defined         => \&Validator::Custom::HTMLForm::Constraints::not_defined,
     defined           => \&Validator::Custom::HTMLForm::Constraints::defined,
@@ -372,11 +372,12 @@ Validator::Custom::HTMLForm - HTML Form validator
 
 =head1 Version
 
-Version 0.0601
+Version 0.0602
 
 =cut
 
-our $VERSION = '0.0601';
+our $VERSION = '0.0602';
+$VERSION = eval $VERSION;
 
 =head1 STATE
 
