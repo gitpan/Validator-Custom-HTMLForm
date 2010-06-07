@@ -11,7 +11,8 @@ my $builder = Module::Build->new(
         'Test::More' => 0,
     },
     requires => {
-        'Validator::Custom::Trim' => 0.0502,
+        'Validator::Custom' => 0.1101,
+        'Validator::Custom::Trim' => 0.0503,
         'Date::Calc' => 5.4,
         'Email::Valid' => 0.15,
         'Email::Valid::Loose' => 0.04,

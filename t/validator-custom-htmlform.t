@@ -1,11 +1,11 @@
-use Test::More 'no_plan';
+use Test::More tests => 117;
 
 use strict;
 use warnings;
 
 use Validator::Custom::HTMLForm;
 
-use lib 't/01-core';
+use lib 't/validator-custom-htmlform';
 use DateTime::Format::Sample;
 
 my @infos = (
@@ -346,19 +346,19 @@ my @infos = (
         [qw/k2/],
         sub {
             my $r = shift;
-            my $products = $r->products;
-            is($products->{k1}, '2000-01-02 00:00:00', 'timezone');
+            my $data = $r->data;
+            is($data->{k1}, '2000-01-02 00:00:00', 'timezone');
             
-            isa_ok($products->{k3}, 'DateTime');
-            is($products->{k3}->time_zone->name, 'Asia/Tokyo', 'timezone');
-            is($products->{k3}->year, 2000, 'timezone');
-            is($products->{k3}->month, 1, 'timezone');
-            is($products->{k3}->day, 2, 'timezone');
+            isa_ok($data->{k3}, 'DateTime');
+            is($data->{k3}->time_zone->name, 'Asia/Tokyo', 'timezone');
+            is($data->{k3}->year, 2000, 'timezone');
+            is($data->{k3}->month, 1, 'timezone');
+            is($data->{k3}->day, 2, 'timezone');
            
-            isa_ok($products->{k4}, 'Time::Piece');
-            is($products->{k4}->year, 2000, 'timezone');
-            is($products->{k4}->mon, 1, 'timezone');
-            is($products->{k4}->mday, 2, 'timezone');
+            isa_ok($data->{k4}, 'Time::Piece');
+            is($data->{k4}->year, 2000, 'timezone');
+            is($data->{k4}->mon, 1, 'timezone');
+            is($data->{k4}->mday, 2, 'timezone');
         }
     ],
     [
@@ -471,27 +471,27 @@ my @infos = (
         [qw/k2 k3/],
         sub {
             my $vc = shift;
-            my $products = $vc->products;
-            is($products->{k1}, '2000-01-02 03:04:05', 'timezone');
+            my $data = $vc->data;
+            is($data->{k1}, '2000-01-02 03:04:05', 'timezone');
             
-            is($products->{k4}, '2000-01-01 00:00:00', 'timezone');
+            is($data->{k4}, '2000-01-01 00:00:00', 'timezone');
             
-            isa_ok($products->{k5}, 'DateTime');
-            is($products->{k5}->time_zone->name, 'Asia/Tokyo', 'timezone');
-            is($products->{k5}->year, 2000, 'timezone');
-            is($products->{k5}->month, 1, 'timezone');
-            is($products->{k5}->day, 2, 'timezone');
-            is($products->{k5}->hour, 3, 'timezone');
-            is($products->{k5}->minute, 4, 'timezone');
-            is($products->{k5}->second, 5, 'timezone');
+            isa_ok($data->{k5}, 'DateTime');
+            is($data->{k5}->time_zone->name, 'Asia/Tokyo', 'timezone');
+            is($data->{k5}->year, 2000, 'timezone');
+            is($data->{k5}->month, 1, 'timezone');
+            is($data->{k5}->day, 2, 'timezone');
+            is($data->{k5}->hour, 3, 'timezone');
+            is($data->{k5}->minute, 4, 'timezone');
+            is($data->{k5}->second, 5, 'timezone');
             
-            isa_ok($products->{k6}, 'Time::Piece');
-            is($products->{k6}->year, 2000, 'timezone');
-            is($products->{k6}->mon, 1, 'timezone');
-            is($products->{k6}->mday, 2, 'timezone');
-            is($products->{k6}->hour, 3, 'timezone');
-            is($products->{k6}->minute, 4, 'timezone');
-            is($products->{k6}->second, 5, 'timezone');
+            isa_ok($data->{k6}, 'Time::Piece');
+            is($data->{k6}->year, 2000, 'timezone');
+            is($data->{k6}->mon, 1, 'timezone');
+            is($data->{k6}->mday, 2, 'timezone');
+            is($data->{k6}->hour, 3, 'timezone');
+            is($data->{k6}->minute, 4, 'timezone');
+            is($data->{k6}->second, 5, 'timezone');
         }
     ],
     [
@@ -706,39 +706,39 @@ my @infos = (
         [qw/k5/],
         sub {
             my $vc = shift;
-            my $products = $vc->products;
-            isa_ok($products->{k1}, 'DateTime');
-            is($products->{k1}->year, 2000);
-            is($products->{k1}->month, 1);
-            is($products->{k1}->day, 2);
-            is($products->{k1}->hour, 3);
-            is($products->{k1}->minute, 4);
-            is($products->{k1}->second, 5);
+            my $data = $vc->data;
+            isa_ok($data->{k1}, 'DateTime');
+            is($data->{k1}->year, 2000);
+            is($data->{k1}->month, 1);
+            is($data->{k1}->day, 2);
+            is($data->{k1}->hour, 3);
+            is($data->{k1}->minute, 4);
+            is($data->{k1}->second, 5);
             
-            isa_ok($products->{k2}, 'DateTime');
-            is($products->{k2}->year, 2000);
-            is($products->{k2}->month, 1);
-            is($products->{k2}->day, 2);
-            is($products->{k2}->hour, 3);
-            is($products->{k2}->minute, 4);
-            is($products->{k2}->second, 5);
+            isa_ok($data->{k2}, 'DateTime');
+            is($data->{k2}->year, 2000);
+            is($data->{k2}->month, 1);
+            is($data->{k2}->day, 2);
+            is($data->{k2}->hour, 3);
+            is($data->{k2}->minute, 4);
+            is($data->{k2}->second, 5);
 
-            isa_ok($products->{k3}, 'DateTime');
-            is($products->{k3}->year, 2000);
-            is($products->{k3}->month, 1);
-            is($products->{k3}->day, 2);
-            is($products->{k3}->hour, 3);
-            is($products->{k3}->minute, 4);
-            is($products->{k3}->second, 5);
-            is($products->{k3}->time_zone->name, 'Asia/Tokyo');
+            isa_ok($data->{k3}, 'DateTime');
+            is($data->{k3}->year, 2000);
+            is($data->{k3}->month, 1);
+            is($data->{k3}->day, 2);
+            is($data->{k3}->hour, 3);
+            is($data->{k3}->minute, 4);
+            is($data->{k3}->second, 5);
+            is($data->{k3}->time_zone->name, 'Asia/Tokyo');
             
-            isa_ok($products->{k4}, 'DateTime');
-            is($products->{k4}->year, 2000);
-            is($products->{k4}->month, 1);
-            is($products->{k4}->day, 2);
-            is($products->{k4}->hour, 3);
-            is($products->{k4}->minute, 4);
-            is($products->{k4}->second, 5);
+            isa_ok($data->{k4}, 'DateTime');
+            is($data->{k4}->year, 2000);
+            is($data->{k4}->month, 1);
+            is($data->{k4}->day, 2);
+            is($data->{k4}->hour, 3);
+            is($data->{k4}->minute, 4);
+            is($data->{k4}->second, 5);
         }
     ],
     [
@@ -765,22 +765,22 @@ my @infos = (
         [qw/k4/],
         sub {
             my $vc = shift;
-            my $products = $vc->products;
-            isa_ok($products->{k1}, 'DateTime');
-            is($products->{k1}->hour, 1);
-            is($products->{k1}->minute, 2);
-            is($products->{k1}->second, 3);
+            my $data = $vc->data;
+            isa_ok($data->{k1}, 'DateTime');
+            is($data->{k1}->hour, 1);
+            is($data->{k1}->minute, 2);
+            is($data->{k1}->second, 3);
             
-            isa_ok($products->{k2}, 'DateTime');
-            is($products->{k2}->hour, 1);
-            is($products->{k2}->minute, 2);
-            is($products->{k2}->second, 3);
+            isa_ok($data->{k2}, 'DateTime');
+            is($data->{k2}->hour, 1);
+            is($data->{k2}->minute, 2);
+            is($data->{k2}->second, 3);
 
-            isa_ok($products->{k3}, 'DateTime');
-            is($products->{k3}->hour, 1);
-            is($products->{k3}->minute, 2);
-            is($products->{k3}->second, 3);
-            is($products->{k3}->time_zone->name, 'Asia/Tokyo');
+            isa_ok($data->{k3}, 'DateTime');
+            is($data->{k3}->hour, 1);
+            is($data->{k3}->minute, 2);
+            is($data->{k3}->second, 3);
+            is($data->{k3}->time_zone->name, 'Asia/Tokyo');
         },
     ],
     [
@@ -1054,15 +1054,16 @@ foreach my $exception_info (@exception_infos) {
 }
 
 sub validate_ok {
-    my ($test_name, $data, $validation_rule, $invalid_keys, $products) = @_;
+    my ($test_name, $data, $validation_rule, $invalid_keys, $result_data) = @_;
     my $vc = Validator::Custom::HTMLForm->new;
     my $r = $vc->validate($data, $validation_rule);
     is_deeply([$r->invalid_keys], $invalid_keys, "$test_name invalid_keys");
-    if (ref $products eq 'CODE') {
-        $products->($r);
+    
+    if (ref $result_data eq 'CODE') {
+        $result_data->($r);
     }
-    elsif($products) {
-        is_deeply($r->products, $products, "$test_name products");
+    elsif($result_data) {
+        is_deeply($r->data, $result_data, "$test_name result data");
     }
 }
 

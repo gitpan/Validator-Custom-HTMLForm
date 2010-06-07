@@ -6,8 +6,8 @@ MANIFEST			This list of files
 META.yml
 README
 t/00-load.t
-t/01-core.t
-t/01-core/DateTime/Format/Sample.pm
 t/boilerplate.t
 t/pod-coverage.t
 t/pod.t
+t/validator-custom-htmlform.t
+t/validator-custom-htmlform/DateTime/Format/Sample.pm

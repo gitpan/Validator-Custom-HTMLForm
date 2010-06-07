@@ -126,7 +126,7 @@ sub date {
     
     require Date::Calc;
     my $is_valid = Date::Calc::check_date($year, $month, $day) ? 1 : 0;
-    my $product;
+    my $value;
     if ($is_valid) {
         my $class = $options->{datetime_class} || '';
         if ($class eq 'DateTime') {
@@ -140,18 +140,18 @@ sub date {
             if ($options->{time_zone}) {
                 $date{time_zone} = $options->{time_zone};
             }
-            $product = $class->new(%date);
+            $value = $class->new(%date);
         }
         elsif ($class eq 'Time::Piece') {
             require Time::Piece;
-            $product = sprintf "%04d-%02d-%02d 00:00:00", $year, $month, $day;
-            $product = $class->strptime($product, "%Y-%m-%d %H:%M:%S");
+            $value = sprintf "%04d-%02d-%02d 00:00:00", $year, $month, $day;
+            $value = $class->strptime($value, "%Y-%m-%d %H:%M:%S");
         }
         else {
-            $product = sprintf "%04d-%02d-%02d 00:00:00", $year, $month, $day;
+            $value = sprintf "%04d-%02d-%02d 00:00:00", $year, $month, $day;
         }
     }
-    return ($is_valid, $product);
+    return [$is_valid, $value];
 }
 
 sub time {
@@ -161,9 +161,9 @@ sub time {
     $sec  ||= 0;
 
     require Date::Calc;
-    my $product = Date::Calc::check_time($hour, $min, $sec) ? 1 : 0;
-    my $time = $product ? sprintf("%02d:%02d:%02d", $hour, $min, $sec) : undef;
-    return ($product, $time);
+    my $value = Date::Calc::check_time($hour, $min, $sec) ? 1 : 0;
+    my $time = $value ? sprintf("%02d:%02d:%02d", $hour, $min, $sec) : undef;
+    return [$value, $time];
 }
 
 sub datetime {
@@ -207,7 +207,7 @@ sub datetime {
                 $year, $month, $day, $hour, $min, $sec;
         }
     }
-    return ($is_valid, $data);
+    return [$is_valid, $data];
 }
 
 sub http_url {
@@ -229,7 +229,7 @@ sub greater_than {
       unless defined $target && $target =~ /^\d+$/;
     
     return 0 unless $value =~ /^\d+$/;
-    return ( $value > $target ) ? 1 : 0;
+    return $value > $target ? 1 : 0;
 }
 
 sub less_than {
@@ -239,7 +239,7 @@ sub less_than {
       unless defined $target && $target =~ /^\d+$/;
     
     return 0 unless $value =~ /^\d+$/;
-    return ( $value < $target ) ? 1 : 0;
+    return $value < $target ? 1 : 0;
 }
 
 sub equal_to {
@@ -249,7 +249,7 @@ sub equal_to {
       unless defined $target && $target =~ /^\d+$/;
     
     return 0 unless $value =~ /^\d+$/;
-    return ( $value == $target ) ? 1 : 0;
+    return $value == $target ? 1 : 0;
 }
 
 sub between {
@@ -260,7 +260,7 @@ sub between {
       unless defined($start) && $start =~ /^\d+$/ && defined($end) && $end =~ /^\d+$/;
     
     return 0 unless $value =~ /^\d+$/;
-    return ( $value >= $start && $value <= $end ) ? 1 : 0;
+    return $value >= $start && $value <= $end ? 1 : 0;
 }
 
 sub decimal {
@@ -324,7 +324,7 @@ sub datetime_format {
     if ( $dt && $options->{time_zone} ) {
         $dt->set_time_zone( $options->{time_zone} );
     }
-    return ($is_valid, $dt);
+    return [$is_valid, $dt];
 }
 
 sub datetime_strptime {
@@ -359,7 +359,7 @@ sub datetime_strptime {
     if ( $dt && $options->{time_zone} ) {
         $dt->set_time_zone( $options->{time_zone} );
     }
-    return ($is_valid, $dt);
+    return [$is_valid, $dt];
 }
 
 package Validator::Custom::HTMLForm;
@@ -372,12 +372,11 @@ Validator::Custom::HTMLForm - HTML Form validator
 
 =head1 Version
 
-Version 0.0602
+Version 0.0603
 
 =cut
 
-our $VERSION = '0.0602';
-$VERSION = eval $VERSION;
+our $VERSION = '0.0603';
 
 =head1 STATE
 
