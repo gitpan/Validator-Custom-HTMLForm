@@ -1,9 +1,9 @@
 ---
 name: Validator-Custom-HTMLForm
-version: 0.0603
+version: 0.0604
 author:
   - 'Yuki Kimoto <kimoto.yuki@gmail.com>'
-abstract: HTML Form validator
+abstract: HTML Form Validator
 license: perl
 resources:
   license: ~
@@ -20,9 +20,9 @@ build_requires:
 provides:
   Validator::Custom::HTMLForm:
     file: lib/Validator/Custom/HTMLForm.pm
-    version: 0.0603
+    version: 0.0604
   Validator::Custom::HTMLForm::Constraints:
-    file: lib/Validator/Custom/HTMLForm.pm
+    file: lib/Validator/Custom/HTMLForm/Constraints.pm
 generated_by: Module::Build version 0.31012
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.2.html

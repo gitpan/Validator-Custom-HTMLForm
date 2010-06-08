@@ -1,4 +1,8 @@
+0.0604
+  departed Validator::Custom::HTMLForm::Constraints to one file
+  improved document
 0.0603
+  catch up with Validator::Custom vup 0.1101
   catch up with Validator::Custom::Trim vup 0.0503
 0.0602
   catch up with Validator::Custom::Trim vup 0.0502
