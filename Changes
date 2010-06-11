@@ -1,3 +1,5 @@
+0.0605
+  fixed requires modules
 0.0604
   departed Validator::Custom::HTMLForm::Constraints to one file
   improved document

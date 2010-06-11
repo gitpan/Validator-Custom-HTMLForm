@@ -48,11 +48,11 @@ Validator::Custom::HTMLForm - HTML Form Validator
 
 =head1 VERSION
 
-Version 0.0604
+Version 0.0605
 
 =cut
 
-our $VERSION = '0.0604';
+our $VERSION = '0.0605';
 
 =head1 STABILITY
 

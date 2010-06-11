@@ -12,7 +12,7 @@ my $builder = Module::Build->new(
     },
     requires => {
         'Validator::Custom' => 0.1101,
-        'Validator::Custom::Trim' => 0.0503,
+        'Validator::Custom::Trim' => 0.0504,
         'Date::Calc' => 5.4,
         'Email::Valid' => 0.15,
         'Email::Valid::Loose' => 0.04,
