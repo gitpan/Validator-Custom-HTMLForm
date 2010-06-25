@@ -48,15 +48,11 @@ Validator::Custom::HTMLForm - HTML Form Validator
 
 =head1 VERSION
 
-Version 0.0605
+Version 0.0606
 
 =cut
 
-our $VERSION = '0.0605';
-
-=head1 STABILITY
-
-L<Validator::Custom::HTMLForm> is not stable. APIs will be changed for a while.
+our $VERSION = '0.0606';
 
 =head1 SYNOPSIS
 
@@ -112,12 +108,19 @@ L<Validator::Custom::HTMLForm> is not stable. APIs will be changed for a while.
     # Validate
     my $result = $vc->validate($data, $rule);
 
+=head1 DESCRIPTION
+
+L<Validator::Custom::HTMLForm> is HTML form validator.
+This class inherit all methods from L<Validator::Custom>.
+If you know usage of This module, See L<Validator::Custom>
+documentation.
+
 =head1 METHODS
 
 This module is L<Validator::Custom> subclass.
 All methods of L<Validator::Custom> is available.
 
-=head1 CONSTRAINTS
+=head1 CONSTRAINT FUNCTIONS
 
 L<Validator::Custom::HTMLForm> inherit all constraints from L<Validator::Custom::Trim>.
 and implemenents the following new ones.
@@ -446,6 +449,41 @@ check if the food ordered is in menu
             {in_array => [qw/sushi bread apple/]}
         ]
     ];
+
+=head2 STABILITY
+
+L<Validator::Custom::HTMLForm> is stable.
+The following constraint function keep backword compatible.
+
+    # Constraint functions
+    defined
+    not_defined
+    not_blank
+    blank
+    not_space
+    int
+    uint
+    decimal
+    ascii
+    length
+    http_url
+    selected_at_least
+    regex
+    duplication
+    email
+    email_mx
+    email_loose
+    email_loose_mx
+    date
+    time
+    datetime
+    datetime_strptime
+    datetime_format
+    greater_than
+    less_than
+    equal_to
+    between
+    in_array
 
 =head1 AUTHOR
 
