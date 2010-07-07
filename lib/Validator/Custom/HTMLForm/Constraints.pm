@@ -15,6 +15,14 @@ sub int   { $_[0] =~ /^\-?[\d]+$/        ? 1 : 0 }
 sub uint  { $_[0] =~ /^\d+$/             ? 1 : 0 }
 sub ascii { $_[0] =~ /^[\x21-\x7E]+$/    ? 1 : 0 }
 
+sub shift_array {
+    my $values = shift;
+    
+    $values = [$values] unless ref $values eq 'ARRAY';
+    
+    return [1, shift @$values];
+}
+
 sub duplication {
     my $values = shift;
     
@@ -358,6 +366,8 @@ Constraint functions is explained in L<Validator::Custom::HTMLForm>
 =head2 regex
 
 =head2 duplication
+
+=head2 shift_array
 
 =head2 email
 

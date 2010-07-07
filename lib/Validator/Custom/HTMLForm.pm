@@ -18,6 +18,7 @@ __PACKAGE__->register_constraint(
     int               => \&Validator::Custom::HTMLForm::Constraints::int,
     uint              => \&Validator::Custom::HTMLForm::Constraints::uint,
     ascii             => \&Validator::Custom::HTMLForm::Constraints::ascii,
+    shift             => \&Validator::Custom::HTMLForm::Constraints::shift_array,
     duplication       => \&Validator::Custom::HTMLForm::Constraints::duplication,
     length            => \&Validator::Custom::HTMLForm::Constraints::length,
     regex             => \&Validator::Custom::HTMLForm::Constraints::regex,
@@ -46,13 +47,9 @@ __PACKAGE__->register_constraint(
 
 Validator::Custom::HTMLForm - HTML Form Validator
 
-=head1 VERSION
-
-Version 0.0606
-
 =cut
 
-our $VERSION = '0.0606';
+our $VERSION = '0.0607';
 
 =head1 SYNOPSIS
 
@@ -125,27 +122,27 @@ All methods of L<Validator::Custom> is available.
 L<Validator::Custom::HTMLForm> inherit all constraints from L<Validator::Custom::Trim>.
 and implemenents the following new ones.
 
-=head2 defined
+=head2 C<defined>
 
 check if the data is defined.
 
-=head2 not_defined
+=head2 C<not_defined>
 
 check if the data is not defined.
 
-=head2 not_blank
+=head2 C<not_blank>
 
 check if the data is not blank.
 
-=head2 blank
+=head2 C<blank>
 
 check if the is blank.
 
-=head2 not_space
+=head2 C<not_space>
 
 check if the data do not containe space.
 
-=head2 int
+=head2 C<int>
 
 check if the data is integer.
     
@@ -153,14 +150,14 @@ check if the data is integer.
     123
     -134
 
-=head2 uint
+=head2 C<uint>
 
 check if the data is unsigned integer.
 
     # valid data
     123
     
-=head2 decimal
+=head2 C<decimal>
     
     my $data = { num => '123.45678' };
     my $rule => [
@@ -173,11 +170,11 @@ check if the data is unsigned integer.
 
 each numbers (3,5) mean maximum digits before/after '.'
 
-=head2 ascii
+=head2 C<ascii>
 
 check is the data consists of only ascii code.
 
-=head2 length
+=head2 C<length>
 
 check the length of the data.
 
@@ -200,7 +197,7 @@ the range between 4 and 10.
         ]
     ];
 
-=head2 http_url
+=head2 C<http_url>
 
 verify it is a http(s)-url
 
@@ -211,7 +208,7 @@ verify it is a http(s)-url
         ]
     ];
 
-=head2 selected_at_least
+=head2 C<selected_at_least>
 
 verify the quantity of selected parameters is counted over allowed minimum.
 
@@ -227,7 +224,7 @@ verify the quantity of selected parameters is counted over allowed minimum.
         ]
     ];
 
-=head2 regex
+=head2 C<regex>
 
 check with regular expression.
     
@@ -238,9 +235,9 @@ check with regular expression.
         ]
     ];
 
-=head2 duplication
+=head2 C<duplication>
 
-check if the two data are same or not.
+Check if the two data are same or not.
 
     my $data = {mail1 => 'a@somehost.com', mail2 => 'a@somehost.com'};
     my $rule => [
@@ -249,9 +246,20 @@ check if the two data are same or not.
         ]
     ];
 
-=head2 email
+=head2 C<shift EXPERIMENTAL>
 
-check with L<Email::Valid>.
+Shift the head of array reference.
+
+    my $data = {nums => [1, 2]};
+    my $rule => [
+        nums => [
+            'shift'
+        ]
+    ];
+
+=head2 C<email>
+
+Check with L<Email::Valid>.
 
     my $data = {mail => 'a@somehost.com'};
     my $rule => [
@@ -260,7 +268,7 @@ check with L<Email::Valid>.
         ]
     ];
 
-=head2 email_mx
+=head2 C<email_mx>
 
 check with L<Email::Valid>, including  mx check.
 
@@ -271,7 +279,7 @@ check with L<Email::Valid>, including  mx check.
         ]
     ];
 
-=head2 email_loose
+=head2 C<email_loose>
 
 check with L<Email::Valid::Loose>.
 
@@ -282,7 +290,7 @@ check with L<Email::Valid::Loose>.
         ]
     ];
 
-=head2 email_loose_mx
+=head2 C<email_loose_mx>
 
     my $data = {mail => 'a.@somehost.com'};
     my $rule => [
@@ -291,7 +299,7 @@ check with L<Email::Valid::Loose>.
         ]
     ];
 
-=head2 date
+=head2 C<date>
 
 check with L<Date::Calc>
 
@@ -302,7 +310,7 @@ check with L<Date::Calc>
         ]
     ];
     
-    $result->products->{date}; # 2009-12-13 00:00:00
+    $result->data->{date}; # 2009-12-13 00:00:00
 
 You can specify options
 
@@ -313,7 +321,7 @@ You can specify options
         ]
     ];
     
-    $result->products->{date}; # DateTime object
+    $result->data->{date}; # DateTime object
 
 
     # Convert Time::Piece object
@@ -323,9 +331,9 @@ You can specify options
         ]
     ];
     
-    $result->products->{date}; # Time::Piece object
+    $result->data->{date}; # Time::Piece object
 
-=head2 time
+=head2 C<time>
 
 check with L<Date::Calc>
 
@@ -336,7 +344,7 @@ check with L<Date::Calc>
         ]
     ];
 
-=head2 datetime
+=head2 C<datetime>
 
 check with L<Date::Calc>
 
@@ -350,7 +358,7 @@ check with L<Date::Calc>
         ]
     ];
     
-    $result->products->{datetime}; # 2009-12-13 12:40:13
+    $result->data->{datetime}; # 2009-12-13 12:40:13
 
 You can specify options
 
@@ -361,7 +369,7 @@ You can specify options
         ]
     ];
     
-    $result->products->{date}; # DateTime object
+    $result->data->{date}; # DateTime object
 
 
     # Convert Time::Piece object
@@ -371,9 +379,9 @@ You can specify options
         ]
     ];
     
-    $result->products->{date}; # Time::Piece object
+    $result->data->{date}; # Time::Piece object
 
-=head2 datetime_strptime
+=head2 C<datetime_strptime>
 
 check with L<DateTime::Format::Strptime>.
 
@@ -385,9 +393,9 @@ check with L<DateTime::Format::Strptime>.
         ]
     ];
     
-    $result->products->{datetime}; # DateTime object
+    $result->data->{datetime}; # DateTime object
 
-=head2 datetime_format
+=head2 C<datetime_format>
 
 check with DateTime::Format::***. for example, L<DateTime::Format::HTTP>,
 L<DateTime::Format::Mail>, L<DateTime::Format::MySQL> and etc.
@@ -400,7 +408,7 @@ L<DateTime::Format::Mail>, L<DateTime::Format::MySQL> and etc.
         ]
     ];
 
-=head2 greater_than
+=head2 C<greater_than>
 
 numeric comparison
 
@@ -410,7 +418,7 @@ numeric comparison
         ]
     ];
 
-=head2 less_than
+=head2 C<less_than>
 
 numeric comparison
 
@@ -420,7 +428,7 @@ numeric comparison
         ]
     ];
 
-=head2 equal_to
+=head2 C<equal_to>
 
 numeric comparison
 
@@ -430,7 +438,7 @@ numeric comparison
         ]
     ];
     
-=head2 between
+=head2 C<between>
 
 numeric comparison
 
@@ -440,7 +448,7 @@ numeric comparison
         ]
     ];
 
-=head2 in_array
+=head2 C<in_array>
 
 check if the food ordered is in menu
 

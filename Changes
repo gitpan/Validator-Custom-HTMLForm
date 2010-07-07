@@ -1,3 +1,6 @@
+0.0607
+  added shift constraint (EXPERIMENTAL)
+  updated document
 0.0606
   Validator::Custom::HTMLForm became stable. Backword compatible of 0.0606 is keep. You can use Validator::Custom::HTMLForm at ease.
 0.0605

@@ -1,4 +1,4 @@
-use Test::More tests => 117;
+use Test::More tests => 121;
 
 use strict;
 use warnings;
@@ -807,7 +807,33 @@ my @infos = (
         ],
         [],
         {int_param => '123', left => "abc  ", right => '  def', collapse => "a b c"}
-    ]
+    ],
+    [
+        'shift array',
+        {
+            k1 => [1, 2]
+        },
+        [
+            k1 => [
+                'shift'
+            ]
+        ],
+        [],
+        {k1 => 1}
+    ],
+    [
+        'shift scalar',
+        {
+            k1 => 1
+        },
+        [
+            k1 => [
+                'shift'
+            ]
+        ],
+        [],
+        {k1 => 1}
+    ],
 );
 
 foreach my $info (@infos) {
