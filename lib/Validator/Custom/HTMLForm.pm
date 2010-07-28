@@ -5,11 +5,9 @@ use strict;
 
 use base 'Validator::Custom';
 
-use Validator::Custom::Trim;
 use Validator::Custom::HTMLForm::Constraints;
 
 __PACKAGE__->register_constraint(
-    %{Validator::Custom::Trim->constraints},
     email             => \&Validator::Custom::HTMLForm::Constraints::email,
     email_mx          => \&Validator::Custom::HTMLForm::Constraints::email_mx,
     email_loose       => \&Validator::Custom::HTMLForm::Constraints::email_loose,
@@ -29,7 +27,7 @@ Validator::Custom::HTMLForm - HTML Form Validator
 
 =cut
 
-our $VERSION = '0.0608';
+our $VERSION = '0.0609';
 
 =head1 SYNOPSIS
 

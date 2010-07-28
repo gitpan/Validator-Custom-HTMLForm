@@ -7,13 +7,12 @@ WriteMakefile
           'EXE_FILES' => [],
           'VERSION_FROM' => 'lib/Validator/Custom/HTMLForm.pm',
           'PREREQ_PM' => {
-                           'Validator::Custom' => '0.1207',
-                           'Email::Valid' => '0.15',
-                           'Validator::Custom::Trim' => '0.0504',
-                           'Time::Piece' => '1.15',
-                           'DateTime::Format::Strptime' => '1.07',
                            'Test::More' => 0,
                            'Date::Calc' => '5.4',
+                           'Validator::Custom' => '0.1208',
+                           'Email::Valid' => '0.15',
+                           'Time::Piece' => '1.15',
+                           'DateTime::Format::Strptime' => '1.07',
                            'Email::Valid::Loose' => '0.04'
                          }
         )
