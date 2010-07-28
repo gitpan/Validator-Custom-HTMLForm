@@ -10,18 +10,6 @@ use Validator::Custom::HTMLForm::Constraints;
 
 __PACKAGE__->register_constraint(
     %{Validator::Custom::Trim->constraints},
-    not_defined       => \&Validator::Custom::HTMLForm::Constraints::not_defined,
-    defined           => \&Validator::Custom::HTMLForm::Constraints::defined,
-    not_space         => \&Validator::Custom::HTMLForm::Constraints::not_space,
-    not_blank         => \&Validator::Custom::HTMLForm::Constraints::not_blank,
-    blank             => \&Validator::Custom::HTMLForm::Constraints::blank,
-    int               => \&Validator::Custom::HTMLForm::Constraints::int,
-    uint              => \&Validator::Custom::HTMLForm::Constraints::uint,
-    ascii             => \&Validator::Custom::HTMLForm::Constraints::ascii,
-    shift             => \&Validator::Custom::HTMLForm::Constraints::shift_array,
-    duplication       => \&Validator::Custom::HTMLForm::Constraints::duplication,
-    length            => \&Validator::Custom::HTMLForm::Constraints::length,
-    regex             => \&Validator::Custom::HTMLForm::Constraints::regex,
     email             => \&Validator::Custom::HTMLForm::Constraints::email,
     email_mx          => \&Validator::Custom::HTMLForm::Constraints::email_mx,
     email_loose       => \&Validator::Custom::HTMLForm::Constraints::email_loose,
@@ -29,14 +17,6 @@ __PACKAGE__->register_constraint(
     date              => \&Validator::Custom::HTMLForm::Constraints::date,
     time              => \&Validator::Custom::HTMLForm::Constraints::time,
     datetime          => \&Validator::Custom::HTMLForm::Constraints::datetime,
-    http_url          => \&Validator::Custom::HTMLForm::Constraints::http_url,
-    selected_at_least => \&Validator::Custom::HTMLForm::Constraints::selected_at_least,
-    greater_than      => \&Validator::Custom::HTMLForm::Constraints::greater_than,
-    less_than         => \&Validator::Custom::HTMLForm::Constraints::less_than,
-    equal_to          => \&Validator::Custom::HTMLForm::Constraints::equal_to,
-    between           => \&Validator::Custom::HTMLForm::Constraints::between,
-    decimal           => \&Validator::Custom::HTMLForm::Constraints::decimal,
-    in_array          => \&Validator::Custom::HTMLForm::Constraints::in_array,
     datetime_format   => \&Validator::Custom::HTMLForm::Constraints::datetime_format,
     datetime_strptime => \&Validator::Custom::HTMLForm::Constraints::datetime_strptime,
 );
@@ -49,7 +29,7 @@ Validator::Custom::HTMLForm - HTML Form Validator
 
 =cut
 
-our $VERSION = '0.0607';
+our $VERSION = '0.0608';
 
 =head1 SYNOPSIS
 
@@ -119,143 +99,8 @@ All methods of L<Validator::Custom> is available.
 
 =head1 CONSTRAINT FUNCTIONS
 
-L<Validator::Custom::HTMLForm> inherit all constraints from L<Validator::Custom::Trim>.
-and implemenents the following new ones.
-
-=head2 C<defined>
-
-check if the data is defined.
-
-=head2 C<not_defined>
-
-check if the data is not defined.
-
-=head2 C<not_blank>
-
-check if the data is not blank.
-
-=head2 C<blank>
-
-check if the is blank.
-
-=head2 C<not_space>
-
-check if the data do not containe space.
-
-=head2 C<int>
-
-check if the data is integer.
-    
-    # valid data
-    123
-    -134
-
-=head2 C<uint>
-
-check if the data is unsigned integer.
-
-    # valid data
-    123
-    
-=head2 C<decimal>
-    
-    my $data = { num => '123.45678' };
-    my $rule => [
-        num => [
-            {'decimal' => [3, 5]}
-        ]
-    ];
-
-    Validator::Custom::HTMLForm->new->validate($data,$rule);
-
-each numbers (3,5) mean maximum digits before/after '.'
-
-=head2 C<ascii>
-
-check is the data consists of only ascii code.
-
-=head2 C<length>
-
-check the length of the data.
-
-The following sample check if the length of the data is 4 or not.
-
-    my $data = { str => 'aaaa' };
-    my $rule => [
-        num => [
-            {'length' => 4}
-        ]
-    ];
-
-when you set two arguments, it checks if the length of data is in
-the range between 4 and 10.
-    
-    my $data = { str => 'aaaa' };
-    my $rule => [
-        num => [
-            {'length' => [4, 10]}
-        ]
-    ];
-
-=head2 C<http_url>
-
-verify it is a http(s)-url
-
-    my $data = { url => 'http://somehost.com' };
-    my $rule => [
-        url => [
-            'http_url'
-        ]
-    ];
-
-=head2 C<selected_at_least>
-
-verify the quantity of selected parameters is counted over allowed minimum.
-
-    <input type="checkbox" name="hobby" value="music" /> Music
-    <input type="checkbox" name="hobby" value="movie" /> Movie
-    <input type="checkbox" name="hobby" value="game"  /> Game
-    
-    
-    my $data = {hobby => ['music', 'movie' ]};
-    my $rule => [
-        hobby => [
-            {selected_at_least => 1}
-        ]
-    ];
-
-=head2 C<regex>
-
-check with regular expression.
-    
-    my $data = {str => 'aaa'};
-    my $rule => [
-        str => [
-            {regex => qr/a{3}/}
-        ]
-    ];
-
-=head2 C<duplication>
-
-Check if the two data are same or not.
-
-    my $data = {mail1 => 'a@somehost.com', mail2 => 'a@somehost.com'};
-    my $rule => [
-        [qw/mail1 mail2/] => [
-            'duplication'
-        ]
-    ];
-
-=head2 C<shift EXPERIMENTAL>
-
-Shift the head of array reference.
-
-    my $data = {nums => [1, 2]};
-    my $rule => [
-        nums => [
-            'shift'
-        ]
-    ];
+L<Validator::Custom::HTMLForm> inherit all constraints from 
+L<Validator::Custom> and L<Validator::Custom::Trim>.
 
 =head2 C<email>
 
@@ -408,46 +253,6 @@ L<DateTime::Format::Mail>, L<DateTime::Format::MySQL> and etc.
         ]
     ];
 
-=head2 C<greater_than>
-
-numeric comparison
-
-    my $rule = [
-        age => [
-            {greater_than => 25}
-        ]
-    ];
-
-=head2 C<less_than>
-
-numeric comparison
-
-    my $rule = [
-        age => [
-            {less_than => 25}
-        ]
-    ];
-
-=head2 C<equal_to>
-
-numeric comparison
-
-    my $rule = [
-        age => [
-            {equal_to => 25}
-        ]
-    ];
-    
-=head2 C<between>
-
-numeric comparison
-
-    my $rule = [
-        age => [
-            {between => [1, 20]}
-        ]
-    ];
-
 =head2 C<in_array>
 
 check if the food ordered is in menu
@@ -461,37 +266,7 @@ check if the food ordered is in menu
 =head2 STABILITY
 
 L<Validator::Custom::HTMLForm> is stable.
-The following constraint function keep backword compatible.
-
-    # Constraint functions
-    defined
-    not_defined
-    not_blank
-    blank
-    not_space
-    int
-    uint
-    decimal
-    ascii
-    length
-    http_url
-    selected_at_least
-    regex
-    duplication
-    email
-    email_mx
-    email_loose
-    email_loose_mx
-    date
-    time
-    datetime
-    datetime_strptime
-    datetime_format
-    greater_than
-    less_than
-    equal_to
-    between
-    in_array
+All constraints keep backword compatible.
 
 =head1 AUTHOR
 

@@ -1,3 +1,26 @@
+0.0608
+  moved the following constraints to base class
+    not_defined
+    defined
+    not_space
+    not_blank
+    blank
+    int
+    uint
+    ascii
+    shift
+    duplication
+    length
+    regex
+    http_url
+    selected_at_least
+    greater_than
+    less_than
+    equal_to
+    between
+    decimal
+    in_array
+
 0.0607
   added shift constraint (EXPERIMENTAL)
   updated document
