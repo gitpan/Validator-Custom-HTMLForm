@@ -1,4 +1,4 @@
-use Test::More tests => 121;
+use Test::More tests => 122;
 
 use strict;
 use warnings;
@@ -1100,3 +1100,22 @@ sub validate_exception {
     like($@, $error, "$test_name exception");
 }
 
+# Test name
+my $test;
+sub test {$test = shift}
+
+# Variables
+my $vc;
+my $data;
+my $rule;
+
+test 'Carp trust relationship';
+$vc = Validator::Custom::HTMLForm->new;
+$data = {datetime => '2004-04-26 19:09:21'};
+$rule = [
+    datetime => [
+        {datetime_format => undef}
+    ]
+];
+eval{$vc->validate($data, $rule)};
+like($@, qr/\.t /, $test);

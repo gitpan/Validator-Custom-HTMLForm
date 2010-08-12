@@ -1,6 +1,6 @@
 ---
 name: Validator-Custom-HTMLForm
-version: 0.0609
+version: 0.0610
 author:
   - 'Yuki Kimoto <kimoto.yuki@gmail.com>'
 abstract: HTML Form Validator
@@ -19,7 +19,7 @@ build_requires:
 provides:
   Validator::Custom::HTMLForm:
     file: lib/Validator/Custom/HTMLForm.pm
-    version: 0.0609
+    version: 0.0610
   Validator::Custom::HTMLForm::Constraints:
     file: lib/Validator/Custom/HTMLForm/Constraints.pm
 generated_by: Module::Build version 0.31012

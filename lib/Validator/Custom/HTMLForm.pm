@@ -27,7 +27,7 @@ Validator::Custom::HTMLForm - HTML Form Validator
 
 =cut
 
-our $VERSION = '0.0609';
+our $VERSION = '0.0610';
 
 =head1 SYNOPSIS
 

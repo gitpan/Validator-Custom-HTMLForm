@@ -5,6 +5,9 @@ use warnings;
 
 use Carp 'croak';
 
+# Carp trust relationship
+push @Validator::Custom::CARP_NOT, __PACKAGE__;
+
 sub email {
     require Email::Valid;
     return 0 unless $_[0];
