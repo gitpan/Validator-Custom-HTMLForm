@@ -1,28 +1,26 @@
----
-name: Validator-Custom-HTMLForm
-version: 0.0610
+--- #YAML:1.0
+name:               Validator-Custom-HTMLForm
+version:            0.0611
+abstract:           HTML Form Validator
 author:
-  - 'Yuki Kimoto <kimoto.yuki@gmail.com>'
-abstract: HTML Form Validator
-license: perl
-resources:
-  license: ~
+    - Yuki Kimoto <kimoto.yuki@gmail.com>
+license:            perl
+distribution_type:  module
+configure_requires:
+    ExtUtils::MakeMaker:  0
 requires:
-  Date::Calc: 5.4
-  DateTime::Format::Strptime: 1.07
-  Email::Valid: 0.15
-  Email::Valid::Loose: 0.04
-  Time::Piece: 1.15
-  Validator::Custom: 0.1208
-build_requires:
-  Test::More: 0
-provides:
-  Validator::Custom::HTMLForm:
-    file: lib/Validator/Custom/HTMLForm.pm
-    version: 0.0610
-  Validator::Custom::HTMLForm::Constraints:
-    file: lib/Validator/Custom/HTMLForm/Constraints.pm
-generated_by: Module::Build version 0.31012
+    Date::Calc:           5.4
+    DateTime::Format::Strptime:  1.07
+    Email::Valid:         0.15
+    Email::Valid::Loose:  0.04
+    Test::More:           0
+    Time::Piece:          1.15
+    Validator::Custom:    0.1208
+no_index:
+    directory:
+        - t
+        - inc
+generated_by:       ExtUtils::MakeMaker version 6.48
 meta-spec:
-  url: http://module-build.sourceforge.net/META-spec-v1.2.html
-  version: 1.2
+    url:      http://module-build.sourceforge.net/META-spec-v1.4.html
+    version:  1.4
