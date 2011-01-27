@@ -202,40 +202,5 @@ sub datetime_strptime {
 
 =head1 NAME
 
-Validator::Custom::HTMLForm::Constraints - HTML Form constraint functions
-
-=head1 CONSTRAINT FUNCTIONS
-
-Constraint functions is explained in L<Validator::Custom::HTMLForm>
-
-=head2 C<email>
-
-=head2 C<email_mx>
-
-=head2 C<email_loose>
-
-=head2 C<email_loose_mx>
-
-=head2 C<date>
-
-=head2 C<time>
-
-=head2 C<datetime>
-
-=head2 C<datetime_strptime>
-
-=head2 C<datetime_format>
-
-=head1 AUTHOR
-
-Yuki Kimoto, C<< <kimoto.yuki at gmail.com> >>
-
-=head1 COPYRIGHT & LICENSE
-
-Copyright 2009 Yuki Kimoto, all rights reserved.
-
-This program is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
-
-=cut
+Validator::Custom::HTMLForm::Constraints - DEPRECATED!
 

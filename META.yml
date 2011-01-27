@@ -1,26 +1,30 @@
---- #YAML:1.0
-name:               Validator-Custom-HTMLForm
-version:            0.0611
-abstract:           HTML Form Validator
+---
+abstract: DEPRECATED!
 author:
-    - Yuki Kimoto <kimoto.yuki@gmail.com>
-license:            perl
-distribution_type:  module
+  - 'Yuki Kimoto <kimoto.yuki@gmail.com>'
+build_requires:
+  Test::More: 0
 configure_requires:
-    ExtUtils::MakeMaker:  0
-requires:
-    Date::Calc:           5.4
-    DateTime::Format::Strptime:  1.07
-    Email::Valid:         0.15
-    Email::Valid::Loose:  0.04
-    Test::More:           0
-    Time::Piece:          1.15
-    Validator::Custom:    0.1208
-no_index:
-    directory:
-        - t
-        - inc
-generated_by:       ExtUtils::MakeMaker version 6.48
+  Module::Build: 0.36
+generated_by: 'Module::Build version 0.3607'
+license: perl
 meta-spec:
-    url:      http://module-build.sourceforge.net/META-spec-v1.4.html
-    version:  1.4
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: Validator-Custom-HTMLForm
+provides:
+  Validator::Custom::HTMLForm:
+    file: lib/Validator/Custom/HTMLForm.pm
+    version: 0.0612
+  Validator::Custom::HTMLForm::Constraints:
+    file: lib/Validator/Custom/HTMLForm/Constraints.pm
+requires:
+  Date::Calc: 5.4
+  DateTime::Format::Strptime: 1.07
+  Email::Valid: 0.15
+  Email::Valid::Loose: 0.04
+  Time::Piece: 1.15
+  Validator::Custom: 0.1208
+resources:
+  license: http://dev.perl.org/licenses/
+version: 0.0612

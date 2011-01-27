@@ -4,11 +4,7 @@ lib/Validator/Custom/HTMLForm.pm
 lib/Validator/Custom/HTMLForm/Constraints.pm
 Makefile.PL
 MANIFEST			This list of files
-META.yml
 README
-t/00-load.t
-t/boilerplate.t
-t/pod-coverage.t
-t/pod.t
 t/validator-custom-htmlform.t
 t/validator-custom-htmlform/DateTime/Format/Sample.pm
+META.yml
